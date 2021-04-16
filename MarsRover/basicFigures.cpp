@@ -2,8 +2,7 @@
 // Created by musiek on 4/16/21.
 //
 
-#include <GL/glut.h>
-#include <cmath>
+#include "basicFigures.h"
 
 void cylinderZHeight(int r, int hMax, int zMin, int zMax) {
     double x, y, alpha, PI = 3.14;

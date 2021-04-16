@@ -1,16 +1,41 @@
 #include <GL/glut.h>
 #include <cstdio>
 #include "basicFigures.h"
+#include "Wheel.h"
 
 GLdouble fov = 90.0;
-GLdouble dist = -30.0;
+
+GLdouble posX = 0.0;
+GLdouble posY = 0.0;
+GLdouble posZ = -30.0;
+
 GLdouble rotX = 0.0;
 GLdouble rotY = 0.0;
 GLdouble rotZ = 0.0;
 
+//współrzędne obserwatora
+GLdouble eyeX = 0;
+GLdouble eyeY = 0;
+GLdouble eyeZ = 0;
+
+//współrzędne punktu, w którego stronę zwrócony jest obserwator
+GLdouble centerX = 0;
+GLdouble centerY = 0;
+GLdouble centerZ = -10;
+
+Wheel wheel(0, 0, 0, 0, 0, 0, 10, 5);
+Wheel wheel2(20, 0, 0, 0, 0, 0, 10, 5);
+Wheel wheel3(20, 0, -20, 0, 0, 0, 10, 5);
+Wheel wheel4(0, 0, -20, 0, 0, 0, 10, 5);
+Wheel wheel5(-20, 0, -20, 0, 0, 0, 10, 5);
+Wheel wheel6(-20, 0, 0, 0, 0, 0, 10, 5);
+
+
+
 void drawBox(void)
 {
-    cylinderZHeight(5, 10, -50, 10);
+//    cylinderZHeight(5, 10, -10, 0);
+    glutWireTeapot(10);
 }
 
 void display(void)
@@ -18,20 +43,31 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPolygonMode(GL_FRONT, GL_FILL);
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
-    glTranslatef( 0, 0, dist);
+
+    gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
+
+    glTranslatef( posX, posY, posZ);
     glRotatef(rotX, 1, 0,0);
     glRotatef(rotY, 0, 1,0);
     glRotatef(rotZ, 0, 0,1);
 
-    drawBox();
+//    drawBox();
+    wheel.draw();
+    wheel2.draw();
+    wheel3.draw();
+    wheel4.draw();
+    wheel5.draw();
+    wheel6.draw();
+
 
     // Flush drawing commands
     glFlush();
     glutSwapBuffers();
-//    glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 void init(void)
@@ -86,11 +122,18 @@ void keyboard( unsigned char key, int x, int y )
         fov++;
     else if( key == 'x' && fov > 0 )
         fov--;
-    //distance
-    else if( key == 'c')
-        dist+= 1;
-    else if( key == 'v')
-        dist-= 1;
+    else if( key == 'a')
+        posX+= 1;
+    else if( key == 'd')
+        posX-= 1;
+    else if( key == 'w')
+        posY+= 1;
+    else if( key == 's')
+        posY-= 1;
+    else if( key == 'q')
+        posZ+= 1;
+    else if( key == 'e')
+        posZ-= 1;
     //x rotation
     else if( key == 'i')
         rotX += 5;
@@ -110,6 +153,35 @@ void keyboard( unsigned char key, int x, int y )
     changeSize( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
 }
 
+void specialKeys( int key, int x, int y )
+{
+    switch( key )
+    {
+        // kursor w lewo
+        case GLUT_KEY_LEFT:
+            eyeX+= 1;
+            break;
+
+            // kursor w górę
+        case GLUT_KEY_UP:
+            eyeY -= 1;
+            break;
+
+            // kursor w prawo
+        case GLUT_KEY_RIGHT:
+            eyeX -= 1;
+            break;
+
+            // kursor w dół
+        case GLUT_KEY_DOWN:
+            eyeY += 1;
+            break;
+    }
+
+    // odrysowanie okna
+    changeSize( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
+}
+
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
@@ -125,6 +197,7 @@ int main(int argc, char** argv)
     glutDisplayFunc(display);
     glutReshapeFunc(changeSize);
     glutKeyboardFunc(keyboard);
+    glutSpecialFunc(specialKeys);
 
     init();
     glutMainLoop();
