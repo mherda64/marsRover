@@ -1,92 +1,252 @@
-
-/* Copyright (c) Mark J. Kilgard, 1997. */
-
-/* This program is freely distributable without licensing fees
-   and is provided without guarantee or warrantee expressed or
-   implied. This program is -not- in the public domain. */
-
-   /* This program was requested by Patrick Earl; hopefully someone else
-      will write the equivalent Direct3D immediate mode program. */
-
 #include <GL/glut.h>
+#include <cstdio>
+#include "math.h"
 
-GLfloat light_diffuse[] = { 1.0, 0.0, 0.0, 1.0 };  /* Red diffuse light. */
-GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };  /* Infinite light location. */
-GLfloat n[6][3] = {  /* Normals for the 6 faces of a cube. */
-  {-1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {1.0, 0.0, 0.0},
-  {0.0, -1.0, 0.0}, {0.0, 0.0, 1.0}, {0.0, 0.0, -1.0} };
-GLint faces[6][4] = {  /* Vertex indices for the 6 faces of a cube. */
-  {0, 1, 2, 3}, {3, 2, 6, 7}, {7, 6, 5, 4},
-  {4, 5, 1, 0}, {5, 6, 2, 1}, {7, 4, 0, 3} };
-GLfloat v[8][3];  /* Will be filled in with X,Y,Z vertexes. */
+GLdouble fov = 90.0;
+GLdouble dist = -30.0;
+GLdouble rotX = 0.0;
+GLdouble rotY = 0.0;
+GLdouble rotZ = 0.0;
 
-void
-drawBox(void)
+float sinDeg(int angle) {
+    return sin((float) (angle) / 360 * 2 * 3.14);
+}
+
+float cosDeg(int angle) {
+    return cos((float) (angle) / 360 * 2 * 3.14);
+}
+
+void szescian(void)
 {
-    int i;
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    {
+        // Parametry wierzcholkow
 
-    for (i = 0; i < 6; i++) {
-        glBegin(GL_QUADS);
-        glNormal3fv(&n[i][0]);
-        glVertex3fv(&v[faces[i][0]][0]);
-        glVertex3fv(&v[faces[i][1]][0]);
-        glVertex3fv(&v[faces[i][2]][0]);
-        glVertex3fv(&v[faces[i][3]][0]);
+        GLfloat sa[3] = { 0.0f,0.0f,0.0f };
+        GLfloat sb[3] = { 10.0f,0.0f,0.0f };
+        GLfloat sc[3] = { 10.0f,10.0f,0.0f };
+        GLfloat sd[3] = { 0.0f,10.0f,0.0f };
+        GLfloat se[3] = { 0.0f,0.0f,-10.0f };
+        GLfloat sf[3] = { 10.0f,0.0f,-10.0f };
+        GLfloat sg[3] = { 10.0f,10.0f,-10.0f };
+        GLfloat sh[3] = { 0.0f,10.0f,-10.0f };
+
+        GLfloat sa_[3] = { 0.0f,
+                           0.0f,
+                           0.0f };
+        GLfloat sb_[3] = { 10 * cosDeg(45) ,
+                           -10 * sinDeg(45),
+                           0.0f };
+        GLfloat sc_[3] = { 10 * cosDeg(45) + 10 * sinDeg(45),
+                           -10 * sinDeg(45) + 10 * cosDeg(45),
+                           0.0f };
+        GLfloat sd_[3] = { 10 * sinDeg(45) ,
+                           10 * cosDeg(45),
+                           0.0f };
+//         Sciany skladowe
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glBegin(GL_POLYGON);
+        glVertex3fv(sa_);
+        glVertex3fv(sb_);
+        glVertex3fv(sc_);
+        glVertex3fv(sd_);
+        glEnd();
+
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glBegin(GL_POLYGON);
+        glVertex3fv(sb);
+        glVertex3fv(sf);
+        glVertex3fv(sg);
+        glVertex3fv(sc);
+        glEnd();
+
+        glColor3f(0.0f, 0.0f, 1.0f);
+        glBegin(GL_POLYGON);
+        glVertex3fv(sf);
+        glVertex3fv(se);
+        glVertex3fv(sh);
+        glVertex3fv(sg);
+        glEnd();
+
+        glColor3f(1.0f, 1.0f, 0.0f);
+        glBegin(GL_POLYGON);
+        glVertex3fv(se);
+        glVertex3fv(sa);
+        glVertex3fv(sd);
+        glVertex3fv(sh);
+        glEnd();
+
+        glColor3f(0.0f, 1.0f, 1.0f);
+        glBegin(GL_POLYGON);
+        glVertex3fv(sd);
+        glVertex3fv(sc);
+        glVertex3fv(sg);
+        glVertex3fv(sh);
+        glEnd();
+
+        glColor3f(1.0f, 0.0f, 1.0f);
+        glBegin(GL_POLYGON);
+        glVertex3fv(sa);
+        glVertex3fv(sb);
+        glVertex3fv(sf);
+        glVertex3fv(se);
         glEnd();
     }
 }
 
-void
-display(void)
+void walec(double r, double h)
+{
+    double x, y, alpha, PI = 3.14;
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3d(0.8, 0.0, 0);
+    glVertex3d(0, 0, 0);
+    for (alpha = 0; alpha <= 2 * PI; alpha += PI / 40.0)
+    {
+        x = r*sin(alpha);
+        y = r*cos(alpha);
+        glVertex3d(x, y, 0);
+    }
+    glEnd();
+
+    glBegin(GL_TRIANGLE_STRIP);
+    for (alpha = 0.0; alpha <= 2 * PI; alpha += PI / 40.0)
+    {
+        x = r*sin(alpha);
+        y = r* cos(alpha);
+        glVertex3d(x, y, 0);
+        glVertex3d(x, y, h);
+    }
+    glEnd();
+
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3d(0, 0, h);
+    for (alpha = 0; alpha >= -2 * PI; alpha -= PI / 40.0)
+    {
+        x = r*sin(alpha);
+        y = r*cos(alpha);
+        glVertex3d(x, y, h);
+    }
+    glEnd();
+}
+
+void drawBox(void)
+{
+    walec(5, 5);
+}
+
+void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity();
+    glTranslatef( 0, 0, dist);
+    glRotatef(rotX, 1, 0,0);
+    glRotatef(rotY, 0, 1,0);
+    glRotatef(rotZ, 0, 0,1);
+
     drawBox();
+
+    // Flush drawing commands
+    glFlush();
     glutSwapBuffers();
+//    glutPostRedisplay();
 }
 
-void
-init(void)
+void init(void)
 {
-    /* Setup cube vertex data. */
-    v[0][0] = v[1][0] = v[2][0] = v[3][0] = -1;
-    v[4][0] = v[5][0] = v[6][0] = v[7][0] = 1;
-    v[0][1] = v[1][1] = v[4][1] = v[5][1] = -1;
-    v[2][1] = v[3][1] = v[6][1] = v[7][1] = 1;
-    v[0][2] = v[3][2] = v[4][2] = v[7][2] = 1;
-    v[1][2] = v[2][2] = v[5][2] = v[6][2] = -1;
 
-    /* Enable a single OpenGL light. */
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);	// Hidden surface removal
+    glFrontFace(GL_CCW);		// Counter clock-wise polygons face out
+    //glEnable(GL_CULL_FACE);		// Do not calculate inside of jet
 
-    /* Use depth buffering for hidden surface elimination. */
-    glEnable(GL_DEPTH_TEST);
+    // White background
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f );
+    // Black brush
+    glColor3f(0.0,0.0,0.0);
 
-    /* Setup the view of the cube. */
-    glMatrixMode(GL_PROJECTION);
-    gluPerspective( /* field of view in degree */ 40.0,
-        /* aspect ratio */ 1.0,
-        /* Z near */ 1.0, /* Z far */ 10.0);
-    glMatrixMode(GL_MODELVIEW);
-    gluLookAt(0.0, 0.0, 5.0,  /* eye is at (0,0,5) */
-        0.0, 0.0, 0.0,      /* center is at (0,0,0) */
-        0.0, 1.0, 0.);      /* up is in positive Y direction */
-
-      /* Adjust cube position to be asthetic angle. */
-    glTranslatef(0.0, 0.0, -1.0);
-    glRotatef(60, 1.0, 0.0, 0.0);
-    glRotatef(-20, 0.0, 0.0, 1.0);
 }
 
-int
-main(int argc, char** argv)
+// Change viewing volume and viewport.  Called when window is resized
+void ChangeSize(int w, int h)
+{
+    GLfloat nRange = 100.0f;
+    GLfloat fAspect;
+    // Prevent a divide by zero
+    if(h == 0)
+        h = 1;
+
+    fAspect=(GLfloat)w/(GLfloat)h;
+    // Set Viewport to window dimensions
+    glViewport(0, 0, w, h);
+
+    // Reset coordinate system
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    GLdouble aspect = 1;
+    if( h > 0 )
+        aspect = w /( GLdouble ) h;
+
+    // rzutowanie perspektywiczne
+    gluPerspective( fov, aspect, 1.0, 100.0 );
+
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    display();
+}
+
+void Keyboard( unsigned char key, int x, int y )
+{
+    //fov
+    if( key == 'z' && fov < 180 )
+        fov++;
+    else if( key == 'x' && fov > 0 )
+        fov--;
+    //distance
+    else if( key == 'c')
+        dist+= 1;
+    else if( key == 'v')
+        dist-= 1;
+    //x rotation
+    else if( key == 'i')
+        rotX += 5;
+    else if( key == 'o')
+        rotX -= 5;
+    //y rotation
+    else if( key == 'k')
+        rotY += 5;
+    else if( key == 'l')
+        rotY -= 5;
+    //z rotation
+    else if( key == ',')
+        rotZ += 5;
+    else if( key == '.')
+        rotZ -= 5;
+
+    ChangeSize( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
+}
+
+int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutCreateWindow("red 3D lighted cube");
+    glutInitWindowPosition(800,20);
+    glutInitWindowSize(500, 500);
+    glutCreateWindow("Mars Rover");
+
+    int w = glutGet(GLUT_WINDOW_WIDTH);
+    int h = glutGet(GLUT_WINDOW_HEIGHT);
+    ChangeSize(w, h);
+
     glutDisplayFunc(display);
+    glutReshapeFunc(ChangeSize);
+    glutKeyboardFunc(Keyboard);
+
     init();
     glutMainLoop();
     return 0;             /* ANSI C requires main to return int. */
