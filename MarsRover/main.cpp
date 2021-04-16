@@ -1,7 +1,7 @@
 #include <GL/glut.h>
 #include <cstdio>
 #include "basicFigures.h"
-#include "Wheel.h"
+#include "Rover.h"
 
 GLdouble fov = 90.0;
 
@@ -23,14 +23,9 @@ GLdouble centerX = 0;
 GLdouble centerY = 0;
 GLdouble centerZ = -10;
 
-Wheel wheel(0, 0, 0, 0, 0, 0, 10, 5);
-Wheel wheel2(20, 0, 0, 0, 0, 0, 10, 5);
-Wheel wheel3(20, 0, -20, 0, 0, 0, 10, 5);
-Wheel wheel4(0, 0, -20, 0, 0, 0, 10, 5);
-Wheel wheel5(-20, 0, -20, 0, 0, 0, 10, 5);
-Wheel wheel6(-20, 0, 0, 0, 0, 0, 10, 5);
+Rover rover(20, 0, 0, 15, 45, 25, 20);
 
-
+//TODO Add Point class maybe to clean the x y z mess up a little bit
 
 void drawBox(void)
 {
@@ -56,13 +51,7 @@ void display(void)
     glRotatef(rotZ, 0, 0,1);
 
 //    drawBox();
-    wheel.draw();
-    wheel2.draw();
-    wheel3.draw();
-    wheel4.draw();
-    wheel5.draw();
-    wheel6.draw();
-
+    rover.draw();
 
     // Flush drawing commands
     glFlush();

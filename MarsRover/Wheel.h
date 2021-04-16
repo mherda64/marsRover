@@ -11,7 +11,14 @@
 
 class Wheel : public SceneObject {
 public:
+    /*
+     * Radius of the wheel
+     */
     GLdouble r;
+
+    /*
+     * Width of the wheel
+     */
     GLdouble width;
 
     Wheel(GLdouble x, GLdouble y, GLdouble z, GLdouble xRot, GLdouble yRot, GLdouble zRot, GLdouble r, GLdouble width);
