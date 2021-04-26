@@ -28,6 +28,7 @@ private:
 
     TurretBase* turretBase;
 
+    SuspensionBar* turret;
 public:
     /*
      * Distance between the wheels

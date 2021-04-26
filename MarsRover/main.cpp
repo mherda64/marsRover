@@ -110,17 +110,17 @@ void keyboard( unsigned char key, int x, int y )
     else if( key == 'x' && fov > 0 )
         fov--;
     else if( key == 'a')
-        posX+= 1;
+        posX+= 5;
     else if( key == 'd')
-        posX-= 1;
+        posX-= 5;
     else if( key == 's')
-        posY+= 1;
+        posY+= 5;
     else if( key == 'w')
-        posY-= 1;
+        posY-= 5;
     else if( key == 'q')
-        posZ+= 1;
+        posZ+= 5;
     else if( key == 'e')
-        posZ-= 1;
+        posZ-= 5;
     //x rotation
     else if( key == 'i')
         rotX += 5;
