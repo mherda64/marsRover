@@ -21,7 +21,7 @@ GLdouble centerX = 0;
 GLdouble centerY = 0;
 GLdouble centerZ = -10;
 
-Rover rover(100, 10, 0, 0, 90, 0, 100);
+Rover rover(0, 0, 0, 0, 0, 0, 100);
 
 void drawBox(void)
 {
