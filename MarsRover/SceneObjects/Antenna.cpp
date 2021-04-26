@@ -16,6 +16,8 @@ void Antenna::draw()
 	glRotatef(rotation.yRot, 0, 1, 0);
 	glRotatef(rotation.zRot, 0, 0, 1);
 
+	glScalef(5, 5, 5);
+
 	double alpha,x,y,z;
 	double baseHeight = 10;
 	int stripCount = 4;
@@ -59,6 +61,7 @@ void Antenna::draw()
 	glVertex3d(0, r, 0);
 	glEnd();
 
+	//kaptur góra
 	bool changeColor = true;
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3d(.6f, .5f, 0);
@@ -82,6 +85,30 @@ void Antenna::draw()
 	z = animationR * cos(2 * PI + PI / 10.0);
 	glVertex3d( x / speed,  baseHeight + oneStep * speed, z/speed);
 	glEnd();
+
+	//kaptur dół
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3d(.6f, .5f, 0);
+    glVertex3d(0,  baseHeight + oneStep ,0);
+    for (alpha = 2 * PI; alpha >= 0; alpha -= PI / 20.0,changeColor=!changeColor)
+    {
+        x = animationR * sin(alpha);
+        z = animationR * cos(alpha);
+        if (changeColor)
+        {
+            glColor3d(.6f, .5f, 0);
+        }
+        else
+        {
+            glColor3d(.8f, .5f, 0);
+        }
+        glVertex3d(x/speed, baseHeight + oneStep*speed, z/speed);
+    }
+    changeColor = !changeColor;
+    x = animationR * sin(2 * PI - PI / 10.0);
+    z = animationR * cos(2 * PI + PI / 10.0);
+    glVertex3d( x / speed,  baseHeight + oneStep * speed, z/speed);
+    glEnd();
 
 	if (speed >= 3.f)
 	{

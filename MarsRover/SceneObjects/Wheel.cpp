@@ -26,8 +26,6 @@ void Wheel::draw() {
     glRotatef(rotation.zRot, 0, 0, 1);
 
 
-
-
     double xTmp, yTmp, alpha, PI = 3.14;
     double currentH;
 
