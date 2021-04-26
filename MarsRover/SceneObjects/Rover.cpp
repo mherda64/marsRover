@@ -20,6 +20,10 @@ Rover::Rover(GLdouble x,
     wheels[3] = new Wheel(x + 20, y, z + wheelDist / 2, 0, 0, 0, 10, 5);
     wheels[4] = new Wheel(x - 20, y, z - wheelDist / 2,  0, 0, 0, 10, 5);
     wheels[5] = new Wheel(x - 20, y, z + wheelDist / 2,  0, 0, 0, 10, 5);
+
+    suspensionBars[0] = new SuspensionBar(Rotation(0,0,0), Point(wheels[0]->position.x,
+                                                                 wheels[0]->position.y,
+                                                                 wheels[0]->position.z + wheels[0]->width), Point(x, y, z - 20), 5);
 }
 
 Rover::Rover(const Point &position, const Rotation &rotation, GLdouble wheelDist) : SceneObject(position, rotation),
@@ -40,6 +44,8 @@ void Rover::draw() {
     for (int i = 0; i < 6; i++) {
         wheels[i]->draw();
     }
+
+    suspensionBars[0]->draw();
 
     glPopMatrix();
 }

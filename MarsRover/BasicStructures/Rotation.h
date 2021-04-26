@@ -6,7 +6,7 @@
 #define MARSROVER_ROTATION_H
 
 
-#include <GL/gl.h>
+#include <GL/freeglut.h>
 
 class Rotation {
 public:

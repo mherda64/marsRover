@@ -8,6 +8,7 @@
 
 #include "SceneObject.h"
 #include "Wheel.h"
+#include "SuspensionBar.h"
 
 //TODO keep wheel mount points in an array so it will be easier to draw rover's chassis in the future
 //or even update each wheel's position depending on the terrain
@@ -18,6 +19,8 @@ private:
      * An array of pointers to all the 6 wheels of the rover
      */
     Wheel* wheels[6];
+
+    SuspensionBar* suspensionBars[6];
 public:
     /*
      * Distance between the wheels

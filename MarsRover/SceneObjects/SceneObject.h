@@ -5,7 +5,7 @@
 #ifndef MARSROVER_SCENEOBJECT_H
 #define MARSROVER_SCENEOBJECT_H
 
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include "../BasicStructures/Point.h"
 #include "../BasicStructures/Rotation.h"
 

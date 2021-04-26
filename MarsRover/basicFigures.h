@@ -5,7 +5,7 @@
 #ifndef MARSROVER_BASICFIGURES_H
 #define MARSROVER_BASICFIGURES_H
 
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include "cmath"
 
 void cylinderZHeight(int r, int hMax, int zMin, int zMax);
