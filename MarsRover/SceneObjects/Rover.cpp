@@ -13,12 +13,12 @@ Rover::Rover(GLdouble x,
              GLdouble wheelDist) : SceneObject(x, y, z,
                                                xRot, yRot,
                                                zRot), wheelDist(wheelDist) {
-    wheels[0] = new Wheel(x, y, z - wheelDist / 2, 0, 0, 0, 10, 5, 0);
-    wheels[1] = new Wheel(x, y, z + wheelDist / 2, 0, 180, 0, 10, 5, 0);
-    wheels[2] = new Wheel(x + 20, y, z - wheelDist / 2 - 10, 0, 0, 0, 10, 5, 0);
-    wheels[3] = new Wheel(x + 20, y, z + wheelDist / 2 + 10, 180, 0, 0, 10, 5, 0);
-    wheels[4] = new Wheel(x - 20, y, z - wheelDist / 2 - 10, 0, 0, 0, 10, 5, 0);
-    wheels[5] = new Wheel(x - 20, y, z + wheelDist / 2 + 10, 180, 0, 0, 10, 5, 0);
+    wheels[0] = new Wheel(0, 0, -wheelDist / 2, 0, 0, 0, 10, 5, 0);
+    wheels[1] = new Wheel(0, 0, wheelDist / 2, 0, 180, 0, 10, 5, 0);
+    wheels[2] = new Wheel(40, 0, -wheelDist / 2 - 10, 0, 0, 0, 10, 5, 0);
+    wheels[3] = new Wheel(40, 0, wheelDist / 2 + 10, 180, 0, 0, 10, 5, 0);
+    wheels[4] = new Wheel(-40, 0, -wheelDist / 2 - 10, 0, 0, 0, 10, 5, 0);
+    wheels[5] = new Wheel(-40, 0, wheelDist / 2 + 10, 180, 0, 0, 10, 5, 0);
 
     suspensionBars[0] = new SuspensionBar(Point(wheels[0]->position.x,wheels[0]->position.y,wheels[0]->position.z + wheels[0]->width),
                                           Rotation(0, 0, 0),
@@ -68,11 +68,12 @@ Rover::Rover(const Point &position, const Rotation &rotation, GLdouble wheelDist
 void Rover::draw() {
     glPushMatrix();
 
+    glTranslatef(position.x, position.y, position.z);
+
     glRotatef(rotation.xRot, 1, 0, 0);
     glRotatef(rotation.yRot, 0, 1, 0);
     glRotatef(rotation.zRot, 0, 0, 1);
 
-    glTranslatef(position.x, position.y, position.z);
 
     for (int i = 0; i < 6; i++) {
         wheels[i]->draw();

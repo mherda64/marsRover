@@ -1,4 +1,5 @@
 #include "SceneObjects/Rover.h"
+#include "stdio.h"
 
 GLdouble fov = 90.0;
 
@@ -20,7 +21,7 @@ GLdouble centerX = 0;
 GLdouble centerY = 0;
 GLdouble centerZ = -10;
 
-Rover rover(0, 0, 0, 0, 0, 0, 100);
+Rover rover(100, 10, 0, 0, 90, 0, 100);
 
 void drawBox(void)
 {
@@ -169,13 +170,36 @@ void specialKeys( int key, int x, int y )
     changeSize( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
 }
 
+void enableMultisample(int msaa)
+{
+    if (msaa)
+    {
+        glEnable(GL_MULTISAMPLE);
+        glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
+
+        // detect current settings
+        GLint iMultiSample = 0;
+        GLint iNumSamples = 0;
+        glGetIntegerv(GL_SAMPLE_BUFFERS, &iMultiSample);
+        glGetIntegerv(GL_SAMPLES, &iNumSamples);
+        printf("MSAA on, GL_SAMPLE_BUFFERS = %d, GL_SAMPLES = %d\n", iMultiSample, iNumSamples);
+    }
+    else
+    {
+        glDisable(GL_MULTISAMPLE);
+        printf("MSAA off\n");
+    }
+}
+
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_MULTISAMPLE);
     glutInitWindowPosition(800,20);
     glutInitWindowSize(500, 500);
     glutCreateWindow("Mars Rover");
+
+    enableMultisample(2);
 
     int w = glutGet(GLUT_WINDOW_WIDTH);
     int h = glutGet(GLUT_WINDOW_HEIGHT);
@@ -188,5 +212,5 @@ int main(int argc, char** argv)
 
     init();
     glutMainLoop();
-    return 0;             /* ANSI C requires main to return int. */
+    return 0;
 }

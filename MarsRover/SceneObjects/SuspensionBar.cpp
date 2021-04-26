@@ -66,6 +66,11 @@ void SuspensionBar::draw() {
             glVertex3d(currentX + xTmp, currentY + yTmp, currentZ);
             glVertex3d(currentX + xTmp + xStep, currentY + yTmp + yStep, currentZ + zStep);
         }
+        xTmp = 0;
+        yTmp = radius;
+        glVertex3d(currentX + xTmp, currentY + yTmp, currentZ);
+        glVertex3d(currentX + xTmp + xStep, currentY + yTmp + yStep, currentZ + zStep);
+
         glEnd();
         currentX += xStep;
         currentY += yStep;
@@ -85,27 +90,6 @@ void SuspensionBar::draw() {
     glVertex3d(currentX, currentY + radius, currentZ);
     glEnd();
 
-//    for (currentPath = position.z; currentH < position.z + width; currentH += hMax) {
-//        glBegin(GL_TRIANGLE_STRIP);
-//        for (alpha = 0.0; alpha <= 2 * PI; alpha += PI / 20.0)
-//        {
-//            xTmp = r*sin(alpha);
-//            yTmp = r* cos(alpha);
-//            glColor3d(0, 1 - colorStep, colorStep);
-//            glVertex3d(position.x + xTmp, position.y + yTmp, currentH);
-//            glColor3d(0, 1 - (colorStep + 1.0 / (width / hMax)), colorStep + 1.0 / (width / hMax));
-//            glVertex3d(position.x + xTmp, position.y + yTmp, currentH + hMax);
-//        }
-//        xTmp = r*sin(0);
-//        yTmp = r* cos(0);
-//        glColor3d(0, 1 - colorStep, colorStep);
-//        glVertex3d(position.x + xTmp, position.y + yTmp, currentH);
-//        glColor3d(0, 1 - (colorStep + 1.0 / hMax), colorStep + 1.0 / hMax);
-//        glVertex3d(position.x + xTmp, position.y + yTmp, currentH + hMax);
-//
-//        colorStep += 1.0 / (width / hMax);
-//        glEnd();
-//    }
 
     glPopMatrix();
 
