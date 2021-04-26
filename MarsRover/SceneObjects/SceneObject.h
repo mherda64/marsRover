@@ -6,16 +6,16 @@
 #define MARSROVER_SCENEOBJECT_H
 
 #include <GL/glut.h>
+#include "../BasicStructures/Point.h"
+#include "../BasicStructures/Rotation.h"
 
 
 class SceneObject {
 public:
-    GLdouble x;
-    GLdouble y;
-    GLdouble z;
-    GLdouble xRot;
-    GLdouble yRot;
-    GLdouble zRot;
+    Point position;
+    Rotation rotation;
+
+    SceneObject(const Point &position, const Rotation &rotation);
 
     SceneObject(GLdouble x, GLdouble y, GLdouble z, GLdouble xRot, GLdouble yRot, GLdouble zRot);
 

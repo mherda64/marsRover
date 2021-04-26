@@ -23,6 +23,8 @@ public:
 
     Wheel(GLdouble x, GLdouble y, GLdouble z, GLdouble xRot, GLdouble yRot, GLdouble zRot, GLdouble r, GLdouble width);
 
+    Wheel(const Point &position, const Rotation &rotation, GLdouble r, GLdouble width);
+
     void draw() override;
 };
 

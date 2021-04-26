@@ -22,14 +22,20 @@ Rover::Rover(GLdouble x,
     wheels[5] = new Wheel(x - 20, y, z + wheelDist / 2,  0, 0, 0, 10, 5);
 }
 
+Rover::Rover(const Point &position, const Rotation &rotation, GLdouble wheelDist) : SceneObject(position, rotation),
+                                                                                    wheelDist(wheelDist) {
+    Rover(position.x, position.y, position.z, rotation.xRot, rotation.yRot, rotation.zRot, wheelDist);
+}
+
+
 void Rover::draw() {
     glPushMatrix();
 
-    glRotatef(xRot, 1, 0, 0);
-    glRotatef(yRot, 0, 1, 0);
-    glRotatef(zRot, 0, 0, 1);
+    glRotatef(rotation.xRot, 1, 0, 0);
+    glRotatef(rotation.yRot, 0, 1, 0);
+    glRotatef(rotation.zRot, 0, 0, 1);
 
-    glTranslatef(x, y, z);
+    glTranslatef(position.x, position.y, position.z);
 
     for (int i = 0; i < 6; i++) {
         wheels[i]->draw();
@@ -43,3 +49,4 @@ Rover::~Rover() {
         delete wheels[i];
     }
 }
+

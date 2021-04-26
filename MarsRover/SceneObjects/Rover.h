@@ -30,6 +30,9 @@ public:
 public:
     Rover(GLdouble x, GLdouble y, GLdouble z, GLdouble xRot, GLdouble yRot, GLdouble zRot, GLdouble wheelDist);
 
+
+    Rover(const Point &position, const Rotation &rotation, GLdouble wheelDist);
+
     void draw() override;
 };
 
