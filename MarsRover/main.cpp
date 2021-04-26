@@ -23,7 +23,7 @@ GLdouble centerX = 0;
 GLdouble centerY = 0;
 GLdouble centerZ = -10;
 
-Rover rover(20, 0, 0, 15, 45, 25, 20);
+Rover rover(0, 0, 0, 0, 90, 0, 20);
 
 //TODO Add Point class maybe to clean the x y z mess up a little bit
 
