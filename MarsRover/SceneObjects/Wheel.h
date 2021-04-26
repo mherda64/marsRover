@@ -21,9 +21,14 @@ public:
      */
     GLdouble width;
 
-    Wheel(GLdouble x, GLdouble y, GLdouble z, GLdouble xRot, GLdouble yRot, GLdouble zRot, GLdouble r, GLdouble width);
+    /*
+     * Position of the wheel over the floor level. Used to create dynamic suspension of the rover
+     */
+    GLdouble valueOverFloor;
 
-    Wheel(const Point &position, const Rotation &rotation, GLdouble r, GLdouble width);
+    Wheel(GLdouble x, GLdouble y, GLdouble z, GLdouble xRot, GLdouble yRot, GLdouble zRot, GLdouble r, GLdouble width, GLdouble valueOverFloor);
+
+    Wheel(const Point &position, const Rotation &rotation, GLdouble r, GLdouble width, GLdouble valueOverFloor);
 
     void draw() override;
 };

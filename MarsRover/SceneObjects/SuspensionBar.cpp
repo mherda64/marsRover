@@ -6,22 +6,23 @@
 
 
 
-SuspensionBar::SuspensionBar(const Rotation &rotation, const Point &beginningPoint,
-                             const Point &endPoint, GLdouble radius) : SceneObject(beginningPoint, rotation),
+SuspensionBar::SuspensionBar(const Point &position, const Rotation &rotation, const Point &beginningPoint,
+                             const Point &endPoint, GLdouble radius) : SceneObject(position, rotation),
                                                                        beginningPoint(beginningPoint),
                                                                        endPoint(endPoint), radius(radius) {}
 
 void SuspensionBar::draw() {
     glPushMatrix();
 
+    glTranslatef(position.x, position.y, position.z);
+
     glRotatef(rotation.xRot, 1, 0, 0);
     glRotatef(rotation.yRot, 0, 1, 0);
     glRotatef(rotation.zRot, 0, 0, 1);
 
-    glTranslatef(position.x, position.y, position.z);
+
 
     double xTmp, yTmp, alpha, PI = 3.14;
-    double currentH;
 
     double distance = abs(beginningPoint.z - endPoint.z);
 
@@ -39,9 +40,51 @@ void SuspensionBar::draw() {
     glVertex3d(beginningPoint.x, beginningPoint.y + radius, beginningPoint.z);
     glEnd();
 
+    double xStep = 1;
+    double yStep = 1;
+    double zStep = 1;
+    double currentX = beginningPoint.x;
+    double currentY = beginningPoint.y;
+    double currentZ = beginningPoint.z;
+    double currentPath = 0;
 
-//    double hMax = distance / 10;
-//    for (currentH = position.z; currentH < position.z + width; currentH += hMax) {
+    double xDistance = endPoint.x;
+    double yDistance = endPoint.y;
+    double zDistance = endPoint.z;
+
+    xStep = xDistance / 10;
+    yStep = yDistance / 10;
+    zStep = zDistance / 10;
+
+    while (currentZ < endPoint.z) {
+        glBegin(GL_TRIANGLE_STRIP);
+        for (alpha = 0.0; alpha <= 2 * PI; alpha += PI / 20.0)
+        {
+            xTmp = radius*sin(alpha);
+            yTmp = radius* cos(alpha);
+            glVertex3d(currentX + xTmp, currentY + yTmp, currentZ);
+            glVertex3d(currentX + xTmp + xStep, currentY + yTmp + yStep, currentZ + zStep);
+        }
+        glEnd();
+        currentX += xStep;
+        currentY += yStep;
+        currentZ += zStep;
+    }
+
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3d(1, 0.0, 0);
+    glVertex3d(currentX, currentY, currentZ);
+    glColor3d(0, 0.0, 1);
+    for (alpha = 0; alpha >= -2 * PI; alpha -= PI / 20.0)
+    {
+        xTmp = radius*sin(alpha);
+        yTmp = radius*cos(alpha);
+        glVertex3d(currentX + xTmp, currentY + yTmp, currentZ);
+    }
+    glVertex3d(currentX, currentY + radius, currentZ);
+    glEnd();
+
+//    for (currentPath = position.z; currentH < position.z + width; currentH += hMax) {
 //        glBegin(GL_TRIANGLE_STRIP);
 //        for (alpha = 0.0; alpha <= 2 * PI; alpha += PI / 20.0)
 //        {
@@ -62,18 +105,7 @@ void SuspensionBar::draw() {
 //        colorStep += 1.0 / (width / hMax);
 //        glEnd();
 //    }
-//
-//    glBegin(GL_TRIANGLE_FAN);
-//    glColor3d(1, 0.0, 0);
-//    glVertex3d(position.x, position.y, position.z + width);
-//    glColor3d(0, 0.0, 1);
-//    for (alpha = 0; alpha >= -2 * PI; alpha -= PI / 20.0)
-//    {
-//        xTmp = r*sin(alpha);
-//        yTmp = r*cos(alpha);
-//        glVertex3d(position.x + xTmp, position.y + yTmp, position.z + width);
-//    }
-//    glVertex3d(position.x, position.y + r, position.z + width);
-//    glEnd();
+
+    glPopMatrix();
 
 }

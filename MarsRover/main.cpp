@@ -20,7 +20,7 @@ GLdouble centerX = 0;
 GLdouble centerY = 0;
 GLdouble centerZ = -10;
 
-Rover rover(0, 0, 0, 0, 0, 0, 20);
+Rover rover(0, 0, 0, 0, 0, 0, 100);
 
 void drawBox(void)
 {
@@ -32,7 +32,7 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glPolygonMode(GL_FRONT, GL_LINE);
+//    glPolygonMode(GL_FRONT, GL_LINE);
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glMatrixMode( GL_MODELVIEW );
