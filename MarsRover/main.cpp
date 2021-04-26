@@ -25,7 +25,7 @@ GLdouble centerZ = -10;
 
 Rover rover(0, 0, -20, 0, 0, 0, 20);
 
-
+//TODO Add Point class maybe to clean the x y z mess up a little bit
 
 void drawBox(void)
 {
@@ -51,13 +51,7 @@ void display(void)
     glRotatef(rotZ, 0, 0,1);
 
 //    drawBox();
-    wheel.draw();
-    wheel2.draw();
-    wheel3.draw();
-    wheel4.draw();
-    wheel5.draw();
-    wheel6.draw();
-
+    rover.draw();
 
     // Flush drawing commands
     glFlush();
