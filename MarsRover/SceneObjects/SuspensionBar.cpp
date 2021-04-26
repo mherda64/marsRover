@@ -56,6 +56,7 @@ void SuspensionBar::draw() {
     yStep = yDistance / 10;
     zStep = zDistance / 10;
 
+    glColor3d(1, 0.0, 0);
     while (currentZ < endPoint.z) {
         glBegin(GL_TRIANGLE_STRIP);
         for (alpha = 0.0; alpha <= 2 * PI; alpha += PI / 20.0)
@@ -72,9 +73,9 @@ void SuspensionBar::draw() {
     }
 
     glBegin(GL_TRIANGLE_FAN);
-    glColor3d(1, 0.0, 0);
-    glVertex3d(currentX, currentY, currentZ);
     glColor3d(0, 0.0, 1);
+    glVertex3d(currentX, currentY, currentZ);
+    glColor3d(1, 0.0, 0);
     for (alpha = 0; alpha >= -2 * PI; alpha -= PI / 20.0)
     {
         xTmp = radius*sin(alpha);

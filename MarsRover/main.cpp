@@ -32,18 +32,21 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//    glPolygonMode(GL_FRONT, GL_LINE);
+    glPolygonMode(GL_FRONT, GL_POLYGON);
+//    glPolygonMode(GL_BACK, GL_POINT);
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
 
-    gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
+//    gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
 
-    glTranslatef( posX, posY, posZ);
+
     glRotatef(rotX, 1, 0,0);
     glRotatef(rotY, 0, 1,0);
     glRotatef(rotZ, 0, 0,1);
+
+    glTranslatef( posX, posY, posZ);
 
 //    drawBox();
     rover.draw();
@@ -59,7 +62,7 @@ void init(void)
 
     glEnable(GL_DEPTH_TEST);	// Hidden surface removal
     glFrontFace(GL_CCW);		// Counter clock-wise polygons face out
-    //glEnable(GL_CULL_FACE);		// Do not calculate inside of jet
+    glEnable(GL_CULL_FACE);		// Do not calculate inside of jet
 
     // White background
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f );
@@ -110,9 +113,9 @@ void keyboard( unsigned char key, int x, int y )
         posX+= 1;
     else if( key == 'd')
         posX-= 1;
-    else if( key == 'w')
-        posY+= 1;
     else if( key == 's')
+        posY+= 1;
+    else if( key == 'w')
         posY-= 1;
     else if( key == 'q')
         posZ+= 1;

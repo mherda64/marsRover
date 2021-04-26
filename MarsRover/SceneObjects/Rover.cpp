@@ -51,6 +51,10 @@ Rover::Rover(GLdouble x,
                                           Point(0,0,0),
                                           Point(-20,20 - wheels[5]->valueOverFloor,30), 3);
 
+    body = new Body(Point(0,15,0), Rotation(0,0,0), 50, 80, 10);
+
+    turretBase = new TurretBase(Point(0,25,0), Rotation(0,0,0), 10, 20, 10);
+
 }
 
 Rover::Rover(const Point &position, const Rotation &rotation, GLdouble wheelDist) : SceneObject(position, rotation),
@@ -73,6 +77,9 @@ void Rover::draw() {
         suspensionBars[i]->draw();
     }
 
+    body->draw();
+    turretBase->draw();
+
 
     glPopMatrix();
 }
@@ -82,5 +89,8 @@ Rover::~Rover() {
         delete wheels[i];
         delete suspensionBars[i];
     }
+
+    delete body;
+    delete turretBase;
 }
 
