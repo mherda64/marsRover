@@ -57,6 +57,10 @@ Rover::Rover(GLdouble x,
 
     turret = new SuspensionBar(Point(10,30,0), Rotation(0,90,0), Point(0,0,0), Point(0, 0, 50), 2);
 
+
+    antennas[0] = new Antenna(Point(10, 40, 10),Rotation(0,0,0),0.5,1,1);
+    antennas[1] = new Antenna(Point(10,40,-10),Rotation(0,0,0),0.5,1,1);
+
 }
 
 Rover::Rover(const Point &position, const Rotation &rotation, GLdouble wheelDist) : SceneObject(position, rotation),
@@ -84,6 +88,9 @@ void Rover::draw() {
     turretBase->draw();
     turret->draw();
 
+    for (int i = 0; i < sizeof(antennas)/sizeof(antennas[0]); i++) {
+        antennas[i]->draw();
+    }
     glPopMatrix();
 }
 

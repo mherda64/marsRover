@@ -7,7 +7,6 @@
 
 
 #include "SceneObject.h"
-#include "cmath"
 
 class Wheel : public SceneObject {
 public:

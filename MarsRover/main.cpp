@@ -33,9 +33,10 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glPolygonMode(GL_FRONT, GL_POLYGON);
+    //glPolygonMode(GL_FRONT, GL_POLYGON);
 //    glPolygonMode(GL_BACK, GL_POINT);
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_POLYGON);
 
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
@@ -170,26 +171,26 @@ void specialKeys( int key, int x, int y )
     changeSize( glutGet( GLUT_WINDOW_WIDTH ), glutGet( GLUT_WINDOW_HEIGHT ) );
 }
 
-void enableMultisample(int msaa)
-{
-    if (msaa)
-    {
-        glEnable(GL_MULTISAMPLE);
-        glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
-
-        // detect current settings
-        GLint iMultiSample = 0;
-        GLint iNumSamples = 0;
-        glGetIntegerv(GL_SAMPLE_BUFFERS, &iMultiSample);
-        glGetIntegerv(GL_SAMPLES, &iNumSamples);
-        printf("MSAA on, GL_SAMPLE_BUFFERS = %d, GL_SAMPLES = %d\n", iMultiSample, iNumSamples);
-    }
-    else
-    {
-        glDisable(GL_MULTISAMPLE);
-        printf("MSAA off\n");
-    }
-}
+//void enableMultisample(int msaa)
+//{
+//    if (msaa)
+//    {
+//        glEnable(GL_MULTISAMPLE);
+//        glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
+//
+//        // detect current settings
+//        GLint iMultiSample = 0;
+//        GLint iNumSamples = 0;
+//        glGetIntegerv(GL_SAMPLE_BUFFERS, &iMultiSample);
+//        glGetIntegerv(GL_SAMPLES, &iNumSamples);
+//        printf("MSAA on, GL_SAMPLE_BUFFERS = %d, GL_SAMPLES = %d\n", iMultiSample, iNumSamples);
+//    }
+//    else
+//    {
+//        glDisable(GL_MULTISAMPLE);
+//        printf("MSAA off\n");
+//    }
+//}
 
 int main(int argc, char** argv)
 {
@@ -199,7 +200,7 @@ int main(int argc, char** argv)
     glutInitWindowSize(500, 500);
     glutCreateWindow("Mars Rover");
 
-    enableMultisample(2);
+    //enableMultisample(2);
 
     int w = glutGet(GLUT_WINDOW_WIDTH);
     int h = glutGet(GLUT_WINDOW_HEIGHT);
