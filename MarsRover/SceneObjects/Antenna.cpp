@@ -44,9 +44,7 @@ void Antenna::draw()
 
 			glVertex3d(x, i, z);
 		}
-		/*
-		* adding 2 last verticles to eliminate space between start and end of strip
-		*/
+		/* adding 2 last verticles to eliminate space between start and end of strip*/
 		x = r * sin(0);
 		z = r * cos(0);
 		glVertex3d(x, i + oneStep, z);

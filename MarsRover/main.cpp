@@ -47,7 +47,7 @@ void display(void)
     //glPolygonMode(GL_FRONT, GL_POLYGON);
 //    glPolygonMode(GL_BACK, GL_POINT);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_POLYGON);
+    glPolygonMode(GL_FRONT, GL_POLYGON);
 
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();

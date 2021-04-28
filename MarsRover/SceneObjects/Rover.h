@@ -12,6 +12,7 @@
 #include "Body.h"
 #include "TurretBase.h"
 #include "Antenna.h"
+#include "Afterburner.h"
 
 /**
  * Class representing a whole rover object. It utilizes composition to create various parts of the rover,
@@ -49,6 +50,8 @@ private:
      * An array of antennas.
      */
     Antenna* antennas[2];
+
+    Afterburner* afterburner;
 
 public:
     /**
