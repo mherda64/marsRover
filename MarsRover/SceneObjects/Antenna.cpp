@@ -18,7 +18,8 @@ void Antenna::draw()
 	glRotatef(rotation.yRot, 0, 1, 0);
 	glRotatef(rotation.zRot, 0, 0, 1);
 
-	glScalef(5, 5, 5);
+	/* scale of antenna*/
+	glScalef(2.5, 2.5, 2.5);
 
 	double alpha,x,y,z;
 	double baseHeight = 10; /**<height of antenna base*/
