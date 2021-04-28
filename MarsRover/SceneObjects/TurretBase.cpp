@@ -10,6 +10,7 @@ TurretBase::TurretBase(const Point &position, const Rotation &rotation, GLdouble
 void TurretBase::draw() {
     glPushMatrix();
 
+    //Translation and rotation of a single base.
     glTranslatef(position.x, position.y, position.z);
 
     glRotatef(rotation.xRot, 1, 0, 0);
@@ -19,7 +20,7 @@ void TurretBase::draw() {
     double alpha, PI = 3.14;
     double zTmp, xTmp;
 
-    //bottom
+    //Drawing bottom basis
     glBegin(GL_TRIANGLE_FAN);
     glColor3d(1, 0.0, 0);
     glVertex3d(0, 0, 0);
@@ -33,7 +34,7 @@ void TurretBase::draw() {
     glVertex3d(0, 0, bottomRadius);
     glEnd();
 
-    //side
+    //Drawing side of the base.
     glBegin(GL_TRIANGLE_STRIP);
     glColor3d(1, 0.0, 0);
 
@@ -60,7 +61,7 @@ void TurretBase::draw() {
 
     glEnd();
 
-    //top
+    //Drawing top basis.
     glBegin(GL_TRIANGLE_FAN);
     glColor3d(1, 0.0, 0);
     glVertex3d(0, height, 0);

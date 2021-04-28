@@ -19,6 +19,7 @@ Wheel::Wheel(const Point &position, const Rotation &rotation, GLdouble r, GLdoub
 void Wheel::draw() {
     glPushMatrix();
 
+    //Translation and rotation of a single wheel
     glTranslatef(position.x, position.y, position.z);
 
     glRotatef(rotation.xRot, 1, 0, 0);
@@ -29,7 +30,7 @@ void Wheel::draw() {
     double xTmp, yTmp, alpha, PI = 3.14;
     double currentH;
 
-    //rysowanie dolnej podstawy
+    //drawing bottom basis of the cylinder
     glBegin(GL_TRIANGLE_FAN);
     glColor3d(1, 0.0, 0);
     glVertex3d(0, 0, 0);
@@ -44,6 +45,7 @@ void Wheel::draw() {
     glEnd();
 
 
+    //drawing side walls of the cylinder
     double colorStep = 0;
     double hMax = width / 10;
     for (currentH = 0; currentH < width; currentH += hMax) {
@@ -68,6 +70,7 @@ void Wheel::draw() {
         glEnd();
     }
 
+    //drawing top basis of the cylinder
     glBegin(GL_TRIANGLE_FAN);
     glColor3d(1, 0.0, 0);
     glVertex3d(0, 0, width);

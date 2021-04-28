@@ -8,6 +8,9 @@
 
 #include "SceneObject.h"
 
+/**
+ * Class representing a wheel - cyllinder shape. Extends SceneObject class.
+ */
 class Wheel : public SceneObject {
 public:
     /*
@@ -27,6 +30,14 @@ public:
 
     Wheel(GLdouble x, GLdouble y, GLdouble z, GLdouble xRot, GLdouble yRot, GLdouble zRot, GLdouble r, GLdouble width, GLdouble valueOverFloor);
 
+    /**
+     * Constructor of the wheel class.
+     * @param position Position of the wheel in 3d space.
+     * @param rotation Rotation of the wheel in 3d space.
+     * @param r Radius of the wheel.
+     * @param width Width of the wheel.
+     * @param valueOverFloor Current height/altitude over the floor level.
+     */
     Wheel(const Point &position, const Rotation &rotation, GLdouble r, GLdouble width, GLdouble valueOverFloor);
 
     void draw() override;

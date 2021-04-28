@@ -22,8 +22,8 @@ void Antenna::draw()
 	glScalef(2.5, 2.5, 2.5);
 
 	double alpha,x,y,z;
-	double baseHeight = 10; /**<height of antenna base*/
-	int stripCount = 4; /**<count of strip in antenna base*/
+	double baseHeight = 10; /**<height of the antenna base*/
+	int stripCount = 4; /**<count of the strip in antenna base*/
 	double oneStep = baseHeight / stripCount; /**<height of one strip*/
 
 	
@@ -85,7 +85,7 @@ void Antenna::draw()
 	glColor3d(.6f, .5f, 0);
 	/* adding central vertice*/
 	glVertex3d(0,  baseHeight + (oneStep*7/6) ,0);
-	/* adding new verticels */
+	/* adding new vertices */
 	for (alpha = 0; alpha <= 2 * PI; alpha += PI / 20.0,changeColor=!changeColor)
 	{
 		x = mantleR * sin(alpha);

@@ -13,6 +13,7 @@ Rover::Rover(GLdouble x,
              GLdouble wheelDist) : SceneObject(x, y, z,
                                                xRot, yRot,
                                                zRot), wheelDist(wheelDist) {
+    //Creating all the wheels.
     wheels[0] = new Wheel(0, 0, -wheelDist / 2, 0, 0, 0, 10, 5, 0);
     wheels[1] = new Wheel(0, 0, wheelDist / 2, 0, 180, 0, 10, 5, 0);
     wheels[2] = new Wheel(40, 0, -wheelDist / 2 - 10, 0, 0, 0, 10, 5, 0);
@@ -20,6 +21,7 @@ Rover::Rover(GLdouble x,
     wheels[4] = new Wheel(-40, 0, -wheelDist / 2 - 10, 0, 0, 0, 10, 5, 0);
     wheels[5] = new Wheel(-40, 0, wheelDist / 2 + 10, 180, 0, 0, 10, 5, 0);
 
+    //Creating suspension bars that connect the wheels to the body.
     suspensionBars[0] = new SuspensionBar(Point(wheels[0]->position.x,wheels[0]->position.y,wheels[0]->position.z + wheels[0]->width),
                                           Rotation(0, 0, 0),
                                           Point(0,0,0),
@@ -51,13 +53,16 @@ Rover::Rover(GLdouble x,
                                           Point(0,0,0),
                                           Point(-20,20 - wheels[5]->valueOverFloor,30), 3);
 
+    //Creating the body.
     body = new Body(Point(0,15,0), Rotation(0,0,0), 50, 80, 10);
 
+    //Creating the turret base.
     turretBase = new TurretBase(Point(0,25,0), Rotation(0,0,0), 10, 20, 10);
 
+    //Creating the turret.
     turret = new SuspensionBar(Point(10,30,0), Rotation(0,90,0), Point(0,0,0), Point(0, 0, 50), 2);
 
-
+    //Creating the antennas.
     antennas[0] = new Antenna(Point(-30, 25, 15),Rotation(0,0,0),0.5,1,100);
     antennas[1] = new Antenna(Point(-30,25,-15),Rotation(0,0,0),0.5,1,200);
 
@@ -72,18 +77,20 @@ Rover::Rover(const Point &position, const Rotation &rotation, GLdouble wheelDist
 void Rover::draw() {
     glPushMatrix();
 
+    //Translation and rotation of the whole rover.
     glTranslatef(position.x, position.y, position.z);
 
     glRotatef(rotation.xRot, 1, 0, 0);
     glRotatef(rotation.yRot, 0, 1, 0);
     glRotatef(rotation.zRot, 0, 0, 1);
 
-
+    //Drawing wheels and suspension bars.
     for (int i = 0; i < 6; i++) {
         wheels[i]->draw();
         suspensionBars[i]->draw();
     }
 
+    //Drawing all the rest.
     body->draw();
     turretBase->draw();
     turret->draw();
@@ -91,6 +98,7 @@ void Rover::draw() {
     for (int i = 0; i < sizeof(antennas)/sizeof(antennas[0]); i++) {
         antennas[i]->draw();
     }
+
     glPopMatrix();
 }
 

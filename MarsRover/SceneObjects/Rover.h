@@ -13,30 +13,46 @@
 #include "TurretBase.h"
 #include "Antenna.h"
 
-
-//TODO keep wheel mount points in an array so it will be easier to draw rover's chassis in the future
-//or even update each wheel's position depending on the terrain
-
+/**
+ * Class representing a whole rover object. It utilizes composition to create various parts of the rover,
+ * together creating a whole vehicle.
+ * Extends SceneObject.
+ */
 class Rover : public SceneObject {
 private:
     /*
-     * An array of pointers to all the 6 wheels of the rover
+     * An array of pointers to all the 6 wheels of the rover.
      */
     Wheel* wheels[6];
 
+    /**
+     * An array of pointers to all the 6 suspension bars connecting wheels to the body.
+     */
     SuspensionBar* suspensionBars[6];
 
+    /**
+     * Pointer to the rover's body.
+     */
     Body* body;
 
+    /**
+     * Pointer to the rover's turret base.
+     */
     TurretBase* turretBase;
 
+    /**
+     * Pointer to the rover's turret, created using already existing SuspensionBar class.
+     */
     SuspensionBar* turret;
 
+    /**
+     * An array of antennas.
+     */
     Antenna* antennas[2];
 
 public:
-    /*
-     * Distance between the wheels
+    /**
+     * Distance between the rover's wheels.
      */
     GLdouble wheelDist;
 
@@ -44,9 +60,15 @@ public:
 
 
 public:
+
     Rover(GLdouble x, GLdouble y, GLdouble z, GLdouble xRot, GLdouble yRot, GLdouble zRot, GLdouble wheelDist);
 
-
+    /**
+     * Rover class constructor.
+     * @param position Position of the rover.
+     * @param rotation Rotation of the rover.
+     * @param wheelDist Distance between the rover's wheels.
+     */
     Rover(const Point &position, const Rotation &rotation, GLdouble wheelDist);
 
     void draw() override;

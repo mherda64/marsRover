@@ -1,33 +1,44 @@
 #include "SceneObjects/Rover.h"
 #include "stdio.h"
 
+/**
+ * Field of view variable
+ */
 GLdouble fov = 90.0;
 
+/**
+ * Values used for translating all the objects on the scene.
+ */
 GLdouble posX = 0.0;
 GLdouble posY = 0.0;
 GLdouble posZ = -30.0;
 
+/**
+ * Values used for rotating all the objects on the scene.
+ */
 GLdouble rotX = 0.0;
 GLdouble rotY = 0.0;
 GLdouble rotZ = 0.0;
 
-//współrzędne obserwatora
+/**
+ * Observer's coordinates
+ */
 GLdouble eyeX = 0;
 GLdouble eyeY = 0;
 GLdouble eyeZ = 0;
 
-//współrzędne punktu, w którego stronę zwrócony jest obserwator
+/**
+ * Coordinates of the point the observer is looking at
+ */
 GLdouble centerX = 0;
 GLdouble centerY = 0;
 GLdouble centerZ = -10;
 
+/**
+ * The rover object
+ */
 Rover rover(0, 0, 0, 0, 0, 0, 100);
 
-void drawBox(void)
-{
-//    cylinderZHeight(5, 10, -10, 0);
-    glutWireTeapot(10);
-}
 
 void display(void)
 {
@@ -191,6 +202,8 @@ void specialKeys( int key, int x, int y )
 //        printf("MSAA off\n");
 //    }
 //}
+
+
 
 int main(int argc, char** argv)
 {

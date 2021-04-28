@@ -10,6 +10,7 @@ Body::Body(const Point &position, const Rotation &rotation, GLdouble width, GLdo
 void Body::draw() {
     glPushMatrix();
 
+    //translation and rotation of a single rover body
     glTranslatef(position.x, position.y, position.z);
 
     glRotatef(rotation.xRot, 1, 0, 0);
@@ -83,9 +84,6 @@ void Body::draw() {
     glVertex3d(-length / 2 , height, width / 2);
 
     glEnd();
-
-
-
 
     glPopMatrix();
 }
