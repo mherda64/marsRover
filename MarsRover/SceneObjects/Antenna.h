@@ -4,7 +4,7 @@ class Antenna :
     public SceneObject
 {
 private:
-    bool animationDirection = true;
+    bool animationDirection = true; /**< variable to changte animation direction*/
 public:
 
     GLdouble r;/**<Radius of the antena*/
