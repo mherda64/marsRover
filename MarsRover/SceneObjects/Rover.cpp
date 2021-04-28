@@ -62,13 +62,9 @@ Rover::Rover(GLdouble x,
     //Creating the turret.
     turret = new SuspensionBar(Point(10,30,0), Rotation(0,90,0), Point(0,0,0), Point(0, 0, 50), 2);
 
-<<<<<<< HEAD
     afterburner = new Afterburner(Point(-10, 7, 0), Rotation(0, 0, 0), 8, 13, 8, 5);
 
 
-=======
-    //Creating the antennas.
->>>>>>> 12f55d6b5ae12bcfe730beb518ab355832d299cc
     //Creating the antennas.
     antennas[0] = new Antenna(Point(-30, 25, 15),Rotation(0,0,0),0.5,1,100);
     antennas[1] = new Antenna(Point(-30,25,-15),Rotation(0,0,0),0.5,1,200);

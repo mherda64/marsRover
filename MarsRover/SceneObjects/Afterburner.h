@@ -6,7 +6,7 @@ class Afterburner :
 public:
     GLdouble topRadius; /* radius of top of the afterburner*/
     GLdouble bottomRadius; /* radius of bottom of the afterburner*/
-    GLdouble height; /* height of afterburner/
+    GLdouble height; /* height of afterburner*/
     GLdouble innerRadius; /* radius of bottom inside the afterburner*/
 
 
