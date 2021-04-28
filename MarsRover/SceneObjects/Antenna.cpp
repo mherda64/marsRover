@@ -3,7 +3,9 @@
 Antenna::Antenna(const Point& position, const Rotation& rotation, GLdouble r, GLdouble width, float speed):SceneObject(position,
     rotation),r(r),speed(speed),width(width)
 {
-
+	animationStep = 1.f;
+	minDeviation = 1.f;
+	maxDeviation = 3.f;
 }
 
 void Antenna::draw()
@@ -19,12 +21,12 @@ void Antenna::draw()
 	glScalef(5, 5, 5);
 
 	double alpha,x,y,z;
-	double baseHeight = 10;
-	int stripCount = 4;
-	double oneStep = baseHeight / stripCount;
+	double baseHeight = 10; /**<height of antenna base*/
+	int stripCount = 4; /**<count of strip in antenna base*/
+	double oneStep = baseHeight / stripCount; /**<height of one strip*/
 
 	
-    
+    //antenna base
     glColor3d(.4f, .5f, 0.7f);
 	for (double i = 0; i <= baseHeight; i += oneStep)
 	{
@@ -46,9 +48,8 @@ void Antenna::draw()
 		glEnd();
 	}
 
-	double animationR = r * 10;
 	
-
+	//antenna spike
 	glBegin(GL_TRIANGLE_FAN);
 	//glColor3d(.4f, .5f, 0);
 	glVertex3d(0, baseHeight + oneStep*3, 0);
@@ -60,6 +61,8 @@ void Antenna::draw()
 	}
 	glVertex3d(0, r, 0);
 	glEnd();
+
+	double animationR = r * 10;
 
 	//kaptur góra
 	bool changeColor = true;
@@ -78,12 +81,12 @@ void Antenna::draw()
 		{
 			glColor3d(.8f, .5f, 0);
 		}
-		glVertex3d(x/speed, baseHeight + oneStep*speed, z/speed);
+		glVertex3d(x/animationStep, baseHeight + oneStep*animationStep, z/animationStep);
 	}
 	changeColor = !changeColor;
 	x = animationR * sin(2 * PI + PI / 10.0);
 	z = animationR * cos(2 * PI + PI / 10.0);
-	glVertex3d( x / speed,  baseHeight + oneStep * speed, z/speed);
+	glVertex3d( x / animationStep,  baseHeight + oneStep * animationStep, z/animationStep);
 	glEnd();
 
 	//kaptur dół
@@ -102,29 +105,29 @@ void Antenna::draw()
         {
             glColor3d(.8f, .5f, 0);
         }
-        glVertex3d(x/speed, baseHeight + oneStep*speed, z/speed);
+        glVertex3d(x/animationStep, baseHeight + oneStep*animationStep, z/animationStep);
     }
     changeColor = !changeColor;
     x = animationR * sin(2 * PI - PI / 10.0);
     z = animationR * cos(2 * PI + PI / 10.0);
-    glVertex3d( x / speed,  baseHeight + oneStep * speed, z/speed);
+    glVertex3d( x / animationStep,  baseHeight + oneStep * animationStep, z/animationStep);
     glEnd();
 
-	if (speed >= 3.f)
+	if (animationStep >= maxDeviation)
 	{
 		animationDirection = false;
 	}
-	if(speed<=1.f)
+	if(animationStep<=minDeviation)
 	{
 		animationDirection = true;
 	}
 	if (animationDirection)
 	{
-		speed += speed / 200;
+		animationStep += 1 / speed;
 	}
 	else
 	{
-		speed -= speed / 200;
+		animationStep -= 1 / speed;
 	}
 
 	glColor3d(.4f, .5f, 0);
