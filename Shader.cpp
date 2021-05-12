@@ -1,7 +1,3 @@
-//
-// Created by musiek on 08.05.2021.
-//
-
 #include "Shader.h"
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath)

@@ -1,7 +1,3 @@
-//
-// Created by musiek on 10.05.2021.
-//
-
 #ifndef MARSROVER_CAMERA_H
 #define MARSROVER_CAMERA_H
 
@@ -22,7 +18,7 @@ enum Camera_Movement {
 // Default camera values
 const float YAW         = -90.0f;
 const float PITCH       =  0.0f;
-const float SPEED       =  5.0f;
+const float SPEED       =  15.0f;
 const float SENSITIVITY =  0.1f;
 const float ZOOM        =  45.0f;
 

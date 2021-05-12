@@ -3,16 +3,19 @@ out vec4 FragColor;
 
 in vec3 Normal;
 in vec3 FragPos;
+in vec2 TexCoords;
 
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
 uniform vec3 viewPos;
 
+uniform sampler2D texture_diffuse1;
+
 void main()
 {
     // ambient
-    float ambientStrength = 0.1;
+    float ambientStrength = 0.2;
     vec3 ambient = ambientStrength * lightColor;
 
     // diffuse
@@ -30,5 +33,6 @@ void main()
     vec3 spectacular = spectacularStrength * spec * lightColor;
 
     vec3 result = (ambient + diffuse + spectacular) * objectColor;
-    FragColor = vec4(result, 1.0);
+//     FragColor = vec4(result, 1.0);
+    FragColor = texture(texture_diffuse1, TexCoords) * vec4(result, 1.0);
 }

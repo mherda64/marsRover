@@ -1,14 +1,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "Shader.h"
 #include "Camera.h"
+#include "Model.h"
 
 #include <iostream>
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -30,6 +31,7 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
 glm::vec3 lightPos(1.2f, 2.0f, 2.0f);
+
 
 int main()
 {
@@ -152,6 +154,8 @@ int main()
 
     lightingShader.setVec3("lightPos", lightPos);
 
+    Model rover("./resources/models/rover.obj");
+    Model plane("./resources/models/plane.obj");
 
     // render loop
     // -----------
@@ -166,8 +170,8 @@ int main()
         float x = sin(glfwGetTime() * 3);
         float z = cos(glfwGetTime());
 
-        lightPos = glm::vec3(x, 1.0f, z);
-
+//        lightPos = glm::vec3(x, 3.0f, z);
+        lightPos = camera.Position + glm::vec3(0, 2.0f, 0);
         // input
         // -----
         processInput(window);
@@ -179,13 +183,13 @@ int main()
 
         // be sure to activate shader when setting uniforms/drawing objects
         lightingShader.use();
-        lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-        lightingShader.setVec3("lightColor",  1.0f, 1.0f, 1.0f);
+        lightingShader.setVec3("objectColor", 1.0f, 1.0f, 1.0f);
+        lightingShader.setVec3("lightColor",  1.0f, 0.0f, 0.0f);
         lightingShader.setVec3("lightPos", lightPos);
         lightingShader.setVec3("viewPos", camera.Position);
 
         // view/projection transformations
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 300.0f);
         glm::mat4 view = camera.GetViewMatrix();
         lightingShader.setMat4("projection", projection);
         lightingShader.setMat4("view", view);
@@ -193,12 +197,15 @@ int main()
         // world transformation
         glm::mat4 model = glm::mat4(1.0f);
         float angle = glfwGetTime() * 20;
-        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 1.0f, 0.0f));
+//        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 1.0f, 0.0f));
         lightingShader.setMat4("model", model);
 
-        // render the cube
-        glBindVertexArray(cubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        rover.draw(lightingShader);
+        plane.draw(lightingShader);
+
+//        // render the cube
+//        glBindVertexArray(cubeVAO);
+//        glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
         // also draw the lamp object
