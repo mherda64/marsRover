@@ -379,3 +379,5 @@ FodyWeavers.xsd
 .idea
 CMakeLists.txt
 cmake-build-debug
+
+/assimp

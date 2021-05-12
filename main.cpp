@@ -154,8 +154,8 @@ int main()
 
     lightingShader.setVec3("lightPos", lightPos);
 
-    Model rover("./resources/models/rover.obj");
-    Model plane("./resources/models/plane.obj");
+    Model rover("./resources/rover.obj");
+    Model plane("./resources/plane.obj");
 
     // render loop
     // -----------
