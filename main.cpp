@@ -171,7 +171,7 @@ int main()
         float z = cos(glfwGetTime());
 
 //        lightPos = glm::vec3(x, 3.0f, z);
-        lightPos = camera.Position + glm::vec3(0, 2.0f, 0);
+        lightPobls = camera.Position + glm::vec3(0, 1.0f, 0);
         // input
         // -----
         processInput(window);
@@ -184,7 +184,7 @@ int main()
         // be sure to activate shader when setting uniforms/drawing objects
         lightingShader.use();
         lightingShader.setVec3("objectColor", 1.0f, 1.0f, 1.0f);
-        lightingShader.setVec3("lightColor",  1.0f, 0.0f, 0.0f);
+        lightingShader.setVec3("lightColor",  1.0f, 1.0f, 1.0f);
         lightingShader.setVec3("lightPos", lightPos);
         lightingShader.setVec3("viewPos", camera.Position);
 
