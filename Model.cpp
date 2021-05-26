@@ -45,9 +45,12 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
 }
 
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
+    string name;
     vector<Vertex> vertices;
     vector<uint> indices;
     vector<Texture> textures;
+
+    name = mesh->mName.C_Str();
 
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
@@ -98,7 +101,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     }
 
-    return Mesh(vertices, indices, textures);
+    return Mesh(name, vertices, indices, textures);
 }
 
 
