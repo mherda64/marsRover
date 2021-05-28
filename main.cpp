@@ -7,7 +7,10 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
+
+#ifdef WINDOWS
 #include "direct.h"
+#endif
 
 #include <iostream>
 
@@ -39,7 +42,6 @@ glm::vec3 roverPos(0,0,0);
 
 int main()
 {
-    _getcwd(roverPath,512);
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -159,8 +161,14 @@ int main()
 
     lightingShader.setVec3("lightPos", lightPos);
 
+#ifdef WINDOWS
     Model rover("resources\\rover.obj");
     Model plane("resources\\plane.obj");
+#else
+    Model rover("./resources/rover.obj");
+    Model plane("./resources/plane.obj");
+#endif
+
 
     // render loop
     // -----------
