@@ -88,6 +88,8 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
+
+
     Shader lightingShader("./resources/shaders/lightingShader.vs", "./resources/shaders/lightingShader.fs");
 
     Shader lightCubeShader("./resources/shaders/lightCubeShader.vs", "./resources/shaders/lightCubeShader.fs");
@@ -186,7 +188,6 @@ int main()
 
     roverPtr = &rover;
 #endif
-
 
     // render loop
     // -----------
