@@ -82,6 +82,8 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
+
+
     Shader lightingShader("./resources/shaders/lightingShader.vs", "./resources/shaders/lightingShader.fs");
 
     Shader lightCubeShader("./resources/shaders/lightCubeShader.vs", "./resources/shaders/lightCubeShader.fs");
@@ -159,8 +161,14 @@ int main()
 
     lightingShader.setVec3("lightPos", lightPos);
 
-    Model rover("resources\\rover.obj");
-    Model plane("resources\\plane.obj");
+    #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+        Model rover("resources\\rover.obj");
+        Model plane("resources\\plane.obj");
+    #else
+        Model rover("resources/rover.obj");
+        Model plane("resources/plane.obj");
+    #endif
+    
 
     // render loop
     // -----------
