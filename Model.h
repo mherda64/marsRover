@@ -8,13 +8,11 @@
 #include "Shader.h"
 #include "Mesh.h"
 
-
-
 class Model {
 public:
     Model(string path);
 
-    void draw(Shader &shader);
+    virtual void draw(Shader &shader);
 
 private:
     vector<Mesh> meshes;

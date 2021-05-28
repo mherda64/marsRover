@@ -7,8 +7,9 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
+#include "GameObject.h"
 
-#ifdef WINDOWS
+#ifdef defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 #include "direct.h"
 #endif
 
@@ -38,6 +39,9 @@ glm::vec3 lightPos(1.2f, 2.0f, 2.0f);
 char roverPath[512];
 
 glm::vec3 roverPos(0,0,0);
+glm::vec3 roverRotation(0,0,0);
+
+GameObject* roverPtr;
 
 
 int main()
@@ -161,12 +165,26 @@ int main()
 
     lightingShader.setVec3("lightPos", lightPos);
 
-#ifdef WINDOWS
-    Model rover("resources\\rover.obj");
+#ifdef defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
     Model plane("resources\\plane.obj");
+    GameObject rover(roverPos,
+                     glm::vec3(0,0,0),
+                     glm::vec3(1,1,1),
+                     glm::vec3(1,1,1),
+                     roverRotation,
+                     "resources\\rover.obj");
+
+    roverPtr = &rover;
 #else
-    Model rover("./resources/rover.obj");
     Model plane("./resources/plane.obj");
+    GameObject rover(roverPos,
+                     glm::vec3(0,0,0),
+                     glm::vec3(1,1,1),
+                     glm::vec3(1,1,1),
+                     roverRotation,
+                     "./resources/rover.obj");
+
+    roverPtr = &rover;
 #endif
 
 
@@ -174,6 +192,8 @@ int main()
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
         // per-frame time logic
         // --------------------
         float currentFrame = glfwGetTime();
@@ -196,8 +216,6 @@ int main()
 
         // be sure to activate shader when setting uniforms/drawing objects
         lightingShader.use();
-        lightingShader.setVec3("objectColor", 1.0f, 1.0f, 1.0f);
-        lightingShader.setVec3("lightColor",  1.0f, 1.0f, 1.0f);
         lightingShader.setVec3("lightPos", lightPos);
         lightingShader.setVec3("viewPos", camera.Position);
 
@@ -207,6 +225,10 @@ int main()
         lightingShader.setMat4("projection", projection);
         lightingShader.setMat4("view", view);
 
+
+
+        rover.draw(lightingShader);
+
         // world transformation
         glm::mat4 model = glm::mat4(1.0f);
         lightingShader.setMat4("model", model);
@@ -214,16 +236,17 @@ int main()
         plane.draw(lightingShader);
 
         // world transformation
-        model = glm::mat4(1.0f);
-        float angle = glfwGetTime() * 20;
-        model = glm::translate(model, roverPos);
-//        model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
-        lightingShader.setMat4("model", model);
+//        model = glm::mat4(1.0f);
+//        float angle = glfwGetTime() * 20;
+//        model = glm::translate(model, roverPos);
+////        model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
+//        lightingShader.setMat4("model", model);
 
-        rover.draw(lightingShader);
+//        rover.draw(lightingShader);
 
 
         // also draw the lamp object
+        model = glm::mat4(1.0f);
         lightCubeShader.use();
         lightCubeShader.setMat4("projection", projection);
         lightCubeShader.setMat4("view", view);
@@ -273,11 +296,11 @@ void processInput(GLFWwindow *window)
 
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     {
-        roverPos += glm::vec3(0.5,0,0);
+        roverPtr->goForward(0.5);
     }
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
     {
-        roverPos += glm::vec3(-0.5,0,0);
+        roverPtr->goForward(-0.5);
     }
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
     {
@@ -286,6 +309,31 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
     {
         roverPos += glm::vec3(0,0,-0.5);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+    {
+        roverRotation += glm::vec3(1,0,0);
+    }
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+    {
+        roverRotation -= glm::vec3(1,0,0);
+    }
+    if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+    {
+        roverRotation += glm::vec3(0,5,0);
+    }
+    if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+    {
+        roverRotation -= glm::vec3(0,5,0);
+    }
+    if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+    {
+        roverRotation += glm::vec3(0,0,1);
+    }
+    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+    {
+        roverRotation -= glm::vec3(0,0,1);
     }
 }
 

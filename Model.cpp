@@ -33,6 +33,11 @@ void Model::loadModel(string path) {
     #endif
 
 
+#ifdef WINDOWS
+    directory = path.substr(0, path.find_last_of('\\'));
+#else
+    directory = path.substr(0, path.find_last_of('/'));
+#endif
     processNode(scene->mRootNode, scene);
 }
 
