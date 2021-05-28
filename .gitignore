@@ -85,8 +85,8 @@ StyleCopReport.xml
 *_h.h
 *.ilk
 *.meta
-*.obj
-*.iobj
+#*.obj
+#*.iobj
 *.pch
 *.pdb
 *.ipdb
@@ -381,3 +381,10 @@ CMakeLists.txt
 cmake-build-debug
 
 /assimp
+
+#windows GL lib
+[Aa]ssimp/
+[Gg]lfw/
+[Gg]lad/
+glad.c
+

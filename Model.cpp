@@ -3,9 +3,10 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+
 uint TextureFromFile(const char *path, const string &directory, bool gamma = false);
 
-Model::Model(char *path) {
+Model::Model(string path) {
     loadModel(path);
 }
 
@@ -25,7 +26,12 @@ void Model::loadModel(string path) {
         cout << "ERROR::ASSIMP::" << importer.GetErrorString() << endl;
         return;
     }
-    directory = path.substr(0, path.find_last_of('/'));
+    #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+        directory = path.substr(0, path.find_last_of('\\'));
+    #else
+        directory = path.substr(0, path.find_last_of('/'));
+    #endif
+
 
     processNode(scene->mRootNode, scene);
 }
@@ -135,7 +141,12 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type,
 uint TextureFromFile(const char *path, const string &directory, bool gamma)
 {
     string filename = string(path);
-    filename = directory + '/' + filename;
+    #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+        filename = directory + '\\' + filename;
+    #else
+        filename = directory + '/' + filename;
+    #endif
+
 
     unsigned int textureID;
     glGenTextures(1, &textureID);

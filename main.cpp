@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
+#include "direct.h"
 
 #include <iostream>
 
@@ -31,10 +32,11 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
 glm::vec3 lightPos(1.2f, 2.0f, 2.0f);
-
+char roverPath[512];
 
 int main()
 {
+    _getcwd(roverPath,512);
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -154,8 +156,8 @@ int main()
 
     lightingShader.setVec3("lightPos", lightPos);
 
-    Model rover("./resources/rover.obj");
-    Model plane("./resources/plane.obj");
+    Model rover("resources\\rover.obj");
+    Model plane("resources\\plane.obj");
 
     // render loop
     // -----------
@@ -171,7 +173,7 @@ int main()
         float z = cos(glfwGetTime());
 
 //        lightPos = glm::vec3(x, 3.0f, z);
-        lightPobls = camera.Position + glm::vec3(0, 1.0f, 0);
+        lightPos = camera.Position + glm::vec3(0, 1.0f, 0);
         // input
         // -----
         processInput(window);

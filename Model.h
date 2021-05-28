@@ -12,7 +12,7 @@
 
 class Model {
 public:
-    Model(char* path);
+    Model(string path);
 
     void draw(Shader &shader);
 
