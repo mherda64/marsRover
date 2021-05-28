@@ -19,11 +19,12 @@ using namespace std;
 
 class Mesh {
 public:
+    string name;
     vector<Vertex> vertices;
     vector<uint> indices;
     vector<Texture> textures;
 
-    Mesh(vector<Vertex> vertices, vector<uint> indices, vector<Texture> textures);
+    Mesh(string name, vector<Vertex> vertices, vector<uint> indices, vector<Texture> textures);
 
     void draw(Shader& shader);
 

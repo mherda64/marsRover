@@ -1,7 +1,8 @@
 #include "Mesh.h"
 
-Mesh::Mesh(vector<Vertex> vertices, vector<uint> indices, vector<Texture> textures) {
+Mesh::Mesh(string name, vector<Vertex> vertices, vector<uint> indices, vector<Texture> textures) {
 
+    this->name = name;
     this->vertices = vertices;
     this->indices = indices;
     this->textures = textures;

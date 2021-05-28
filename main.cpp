@@ -34,6 +34,9 @@ float lastFrame = 0.0f;
 glm::vec3 lightPos(1.2f, 2.0f, 2.0f);
 char roverPath[512];
 
+glm::vec3 roverPos(0,0,0);
+
+
 int main()
 {
     _getcwd(roverPath,512);
@@ -198,16 +201,18 @@ int main()
 
         // world transformation
         glm::mat4 model = glm::mat4(1.0f);
+        lightingShader.setMat4("model", model);
+
+        plane.draw(lightingShader);
+
+        // world transformation
+        model = glm::mat4(1.0f);
         float angle = glfwGetTime() * 20;
-//        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 1.0f, 0.0f));
+        model = glm::translate(model, roverPos);
+//        model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
         lightingShader.setMat4("model", model);
 
         rover.draw(lightingShader);
-        plane.draw(lightingShader);
-
-//        // render the cube
-//        glBindVertexArray(cubeVAO);
-//        glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
         // also draw the lamp object
@@ -257,6 +262,23 @@ void processInput(GLFWwindow *window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        roverPos += glm::vec3(0.5,0,0);
+    }
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        roverPos += glm::vec3(-0.5,0,0);
+    }
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    {
+        roverPos += glm::vec3(0,0,0.5);
+    }
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    {
+        roverPos += glm::vec3(0,0,-0.5);
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
