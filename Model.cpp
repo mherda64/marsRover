@@ -63,13 +63,24 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 
     name = mesh->mName.C_Str();
 
+    glm::vec3 min(mesh->mVertices[0].x, mesh->mVertices[0].y, mesh->mVertices[0].z);
+    glm::vec3 max(mesh->mVertices[0].x, mesh->mVertices[0].y, mesh->mVertices[0].z);
+
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
+
         // process vertex positions, normals and texture coordinates
         glm::vec3 vector;
         vector.x = mesh->mVertices[i].x;
         vector.y = mesh->mVertices[i].y;
         vector.z = mesh->mVertices[i].z;
+
+        if (vector.x < min.x) min.x = vector.x;
+        if (vector.x > max.x) max.x = vector.x;
+        if (vector.y < min.y) min.y = vector.y;
+        if (vector.y > max.y) max.y = vector.y;
+        if (vector.z < min.z) min.z = vector.z;
+        if (vector.z > max.z) max.z = vector.z;
 
         Vertex vertex;
         vertex.Position = vector;
@@ -112,7 +123,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     }
 
-    return Mesh(name, vertices, indices, textures);
+    return Mesh(name, vertices, indices, textures, min, max);
 }
 
 
@@ -144,6 +155,18 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type,
         }
     }
     return textures;
+}
+
+glm::vec3 Model::getLeftMiddleWheelOrigin() {
+    for (Mesh mesh : meshes) {
+        if (mesh.name == "Left_Middle_Wheel_Cylinder.001") return mesh.getOrigin();
+    }
+}
+
+glm::vec3 Model::getRightMiddleWheelOrigin() {
+    for (Mesh mesh : meshes) {
+        if (mesh.name == "Right_Middle_Wheel_Cylinder.007") return mesh.getOrigin();
+    }
 }
 
 uint TextureFromFile(const char *path, const string &directory, bool gamma)

@@ -28,12 +28,21 @@ void GameObject::draw(Shader &shader) {
 
 }
 
-GameObject::GameObject(const glm::vec3 &position, const glm::vec3 &velocity, const glm::vec3 &color,
+GameObject::GameObject(const glm::vec3 &position, const float &velocity, const glm::vec3 &color,
                        const glm::vec3 &lightColor, glm::vec3 rotation, string path) : position(position),
                                                                                           velocity(velocity),
                                                                                           color(color),
                                                                                           lightColor(lightColor),
-                                                                                          rotation(rotation), model(path) {}
+                                                                                          rotation(rotation), model(path) {
+    leftTrackPos = model.getLeftMiddleWheelOrigin() + position;
+    rightTrackPos = model.getRightMiddleWheelOrigin() + position;
+
+    this->position.x = (leftTrackPos.x + rightTrackPos.x) / 2;
+    this->position.y = (leftTrackPos.y + rightTrackPos.y) / 2;
+    this->position.z = (leftTrackPos.z + rightTrackPos.z) / 2;
+
+    front = glm::vec3(-1,0,0);
+}
 
 const glm::vec3 &GameObject::getPosition() const {
     return position;
@@ -43,11 +52,11 @@ void GameObject::setPosition(const glm::vec3 &position) {
     GameObject::position = position;
 }
 
-const glm::vec3 &GameObject::getVelocity() const {
+const float &GameObject::getVelocity() const {
     return velocity;
 }
 
-void GameObject::setVelocity(const glm::vec3 &velocity) {
+void GameObject::setVelocity(const float velocity) {
     GameObject::velocity = velocity;
 }
 
@@ -90,6 +99,97 @@ void GameObject::updateFrontVec() {
     front = glm::normalize(front);
 }
 
-void GameObject::goForward(float multiplier) {
-    position -= front * multiplier;
+void GameObject::goForward(float velocity) {
+    if (this->velocity <= maxVelocity && this->velocity >= -maxVelocity)
+        this->velocity += velocity;
+}
+
+void GameObject::updatePos() {
+//    position += front * velocity;
+//    velocity = 0.8 * velocity;
+//    cout << velocity << "\n";
+//    if (velocity < 0.05 && velocity > -0.05) velocity = 0;
+
+// Potem
+//    position.x = (leftTrackPos.x + rightTrackPos.x) / 2;
+//    position.y = (leftTrackPos.y + rightTrackPos.y) / 2;
+//    position.z = (leftTrackPos.z + rightTrackPos.z) / 2;
+
+    if (leftVelocity == 0 && rightVelocity == 0) {
+
+    } else {
+//        front = glm::cross(position, glm::vec3(0,1,0));
+//        front = glm::normalize(front);
+//
+//        position += front * 0.1f;
+
+
+        leftVelocity *= 0.5;
+        rightVelocity *= 0.5;
+
+        glm::vec3 leftTrackVector = front * leftVelocity;
+        glm::vec3 rightTrackVector = front * rightVelocity;
+
+        leftTrackPos += leftTrackVector;
+        rightTrackPos += rightTrackVector;
+
+        glm::vec3 diffVector;
+
+        if (leftVelocity > rightVelocity) {
+            diffVector = leftTrackPos - rightTrackPos;
+            front = glm::cross(diffVector, glm::vec3(0,1,0));
+            front = glm::normalize(front);
+        } else if (leftVelocity < rightVelocity) {
+            diffVector = rightTrackPos - leftTrackPos;
+            front = - glm::cross(diffVector, glm::vec3(0,1,0));
+            front = glm::normalize(front);
+        }
+
+        // Calculate new position
+        this->position.x = (leftTrackPos.x + rightTrackPos.x) / 2;
+        this->position.y = (leftTrackPos.y + rightTrackPos.y) / 2;
+        this->position.z = (leftTrackPos.z + rightTrackPos.z) / 2;
+
+        //update velocity
+        leftVelocity *= 0.9;
+        rightVelocity *= 0.9;
+
+        if (leftVelocity < 0.05 && leftVelocity > -0.05)
+            leftVelocity = 0;
+
+        if (rightVelocity < 0.05 && rightVelocity > -0.05)
+            rightVelocity = 0;
+
+        updateRotation();
+        cout << front.x << ":" << front.z << ":" << rotation.y << "\n\n";
+
+//        cout << position.x << ":" << position.y << ":" << position.z << "\n";
+//        cout << front.x << ":" << front.y << ":" << front.z << "\n\n";
+    }
+
+
+}
+
+float GameObject::getLeftVelocity() const {
+    return leftVelocity;
+}
+
+void GameObject::setLeftVelocity(float leftVelocity) {
+    GameObject::leftVelocity = leftVelocity;
+}
+
+float GameObject::getRightVelocity() const {
+    return rightVelocity;
+}
+
+void GameObject::setRightVelocity(float rightVelocity) {
+    GameObject::rightVelocity = rightVelocity;
+}
+
+void GameObject::updateRotation() {
+    glm::vec3 orig(-1, 0,0);
+    if (front.z > 0)
+        rotation.y = glm::degrees(acos(glm::dot(orig, front) / ( glm::length(orig) * glm::length(front))));
+    else
+        rotation.y = glm::degrees(-acos(glm::dot(orig, front) / ( glm::length(orig) * glm::length(front))));
 }

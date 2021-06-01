@@ -13,7 +13,22 @@ class GameObject {
 
 public:
     glm::vec3 position;
-    glm::vec3 velocity;
+    glm::vec3 leftTrackPos;
+    glm::vec3 rightTrackPos;
+    float velocity;
+    float maxVelocity = 0.5;
+
+    float leftVelocity = 0;
+    float rightVelocity = 0;
+
+    float getLeftVelocity() const;
+
+    void setLeftVelocity(float leftVelocity);
+
+    float getRightVelocity() const;
+
+    void setRightVelocity(float rightVelocity);
+
     glm::vec3 color;
     glm::vec3 lightColor;
     glm::vec3 rotation;
@@ -23,7 +38,7 @@ public:
 
     virtual void draw(Shader &shader);
 
-    GameObject(const glm::vec3 &position, const glm::vec3 &velocity, const glm::vec3 &color,
+    GameObject(const glm::vec3 &position, const float &velocity, const glm::vec3 &color,
                const glm::vec3 &lightColor, glm::vec3 rotation, string path);
 
     void updateFrontVec();
@@ -34,9 +49,9 @@ public:
 
     void setPosition(const glm::vec3 &position);
 
-    const glm::vec3 &getVelocity() const;
+    const float &getVelocity() const;
 
-    void setVelocity(const glm::vec3 &velocity);
+    void setVelocity(const float velocity);
 
     const glm::vec3 &getColor() const;
 
@@ -54,6 +69,9 @@ public:
 
     void setModel(const Model &model);
 
+    void updatePos();
+
+    void updateRotation();
 };
 
 

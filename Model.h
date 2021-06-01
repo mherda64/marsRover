@@ -14,6 +14,9 @@ public:
 
     virtual void draw(Shader &shader);
 
+    glm::vec3 getLeftMiddleWheelOrigin();
+    glm::vec3 getRightMiddleWheelOrigin();
+
 private:
     vector<Mesh> meshes;
     vector<Texture> loadedTextures;
@@ -23,6 +26,7 @@ private:
     vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName);
     void processNode(aiNode *node, const aiScene *scene);
     Mesh processMesh(aiMesh *mesh, const aiScene *scene);
+
 
 };
 

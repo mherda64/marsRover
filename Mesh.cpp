@@ -1,11 +1,13 @@
 #include "Mesh.h"
 
-Mesh::Mesh(string name, vector<Vertex> vertices, vector<uint> indices, vector<Texture> textures) {
+Mesh::Mesh(string name, vector<Vertex> vertices, vector<uint> indices, vector<Texture> textures, glm::vec3 minVec, glm::vec3 maxVec) {
 
     this->name = name;
     this->vertices = vertices;
     this->indices = indices;
     this->textures = textures;
+    this->minVec = minVec;
+    this->maxVec = maxVec;
 
     setupMesh();
 
@@ -67,4 +69,8 @@ void Mesh::draw(Shader &shader) {
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
+}
+
+glm::vec3 Mesh::getOrigin() {
+    return glm::vec3((minVec.x + maxVec.x) / 2, (minVec.y + maxVec.y) / 2, (minVec.z + maxVec.z) / 2);
 }

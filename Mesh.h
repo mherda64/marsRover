@@ -23,10 +23,14 @@ public:
     vector<Vertex> vertices;
     vector<uint> indices;
     vector<Texture> textures;
+    glm::vec3 minVec;
+    glm::vec3 maxVec;
 
-    Mesh(string name, vector<Vertex> vertices, vector<uint> indices, vector<Texture> textures);
+    Mesh(string name, vector<Vertex> vertices, vector<uint> indices, vector<Texture> textures, glm::vec3 minVec, glm::vec3 maxVec);
 
     void draw(Shader& shader);
+
+    glm::vec3 getOrigin();
 
 private:
     uint VAO, VBO, EBO;

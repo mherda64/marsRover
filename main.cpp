@@ -179,11 +179,11 @@ int main()
     roverPtr = &rover;
 #else
     Model plane("./resources/plane.obj");
-    GameObject rover(roverPos,
+    GameObject rover(glm::vec3(0,0.5,1),
+                     0,
+                     glm::vec3(1,1,1),
+                     glm::vec3(1,1,1),
                      glm::vec3(0,0,0),
-                     glm::vec3(1,1,1),
-                     glm::vec3(1,1,1),
-                     roverRotation,
                      "./resources/rover.obj");
 
     roverPtr = &rover;
@@ -193,7 +193,7 @@ int main()
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         // per-frame time logic
         // --------------------
@@ -227,7 +227,8 @@ int main()
         lightingShader.setMat4("view", view);
 
 
-
+//        rover.updateFrontVec();
+        rover.updatePos();
         rover.draw(lightingShader);
 
         // world transformation
@@ -295,47 +296,47 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
 
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-    {
-        roverPtr->goForward(0.5);
-    }
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-    {
-        roverPtr->goForward(-0.5);
-    }
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-    {
-        roverPos += glm::vec3(0,0,0.5);
-    }
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-    {
-        roverPos += glm::vec3(0,0,-0.5);
-    }
+//    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+//    {
+//        roverPtr->setLeftVelocity(0.5);
+//        roverPtr->setRightVelocity(0.5);
+//    }
+//    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+//    {
+//        roverPtr->setLeftVelocity(-0.5);
+//        roverPtr->setRightVelocity(-0.5);
+//    }
+//    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+//    {
+////        roverPtr->setRotation( roverPtr->getRotation() + glm::vec3(0,2,0));
+//        roverPtr->setLeftVelocity(roverPtr->getLeftVelocity() + 0.2);
+//    }
+//    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+//    {
+////        roverPtr->setRotation( roverPtr->getRotation() - glm::vec3(0,2,0));
+//        roverPtr->setRightVelocity(roverPtr->getRightVelocity() + 0.2);
+//    }
 
-    if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+    float speed = 0.2;
+
+    if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
     {
-        roverRotation += glm::vec3(1,0,0);
-    }
-    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-    {
-        roverRotation -= glm::vec3(1,0,0);
+        roverPtr->setLeftVelocity(roverPtr->getLeftVelocity() + speed);
     }
     if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
     {
-        roverRotation += glm::vec3(0,5,0);
+        roverPtr->setLeftVelocity(roverPtr->getLeftVelocity() - speed);
+    }
+    if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+    {
+        roverPtr->setRightVelocity(roverPtr->getRightVelocity() + speed);
     }
     if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
     {
-        roverRotation -= glm::vec3(0,5,0);
+        roverPtr->setRightVelocity(roverPtr->getRightVelocity() - speed);
     }
-    if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
-    {
-        roverRotation += glm::vec3(0,0,1);
-    }
-    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
-    {
-        roverRotation -= glm::vec3(0,0,1);
-    }
+
+
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
