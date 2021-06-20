@@ -28,6 +28,10 @@ public:
 
     Mesh(string name, vector<Vertex> vertices, vector<uint> indices, vector<Texture> textures, glm::vec3 minVec, glm::vec3 maxVec);
 
+    const vec3 &getMinVec() const;
+
+    const vec3 &getMaxVec() const;
+
     void draw(Shader& shader);
 
     glm::vec3 getOrigin();

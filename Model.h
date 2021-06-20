@@ -17,6 +17,9 @@ public:
     glm::vec3 getLeftMiddleWheelOrigin();
     glm::vec3 getRightMiddleWheelOrigin();
 
+    glm::vec3 getMinVec(string meshName);
+    glm::vec3 getMaxVec(string meshName);
+
 private:
     vector<Mesh> meshes;
     vector<Texture> loadedTextures;

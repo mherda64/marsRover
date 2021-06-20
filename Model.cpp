@@ -169,6 +169,18 @@ glm::vec3 Model::getRightMiddleWheelOrigin() {
     }
 }
 
+glm::vec3 Model::getMinVec(string meshName) {
+    for (Mesh mesh : meshes) {
+        if (mesh.name == meshName) return mesh.getMinVec();
+    }
+}
+
+glm::vec3 Model::getMaxVec(string meshName) {
+    for (Mesh mesh : meshes) {
+        if (mesh.name == meshName) return mesh.getMaxVec();
+    }
+}
+
 uint TextureFromFile(const char *path, const string &directory, bool gamma)
 {
     string filename = string(path);

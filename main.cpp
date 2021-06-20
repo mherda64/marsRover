@@ -7,7 +7,8 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
-#include "GameObject.h"
+#include "Rover.h"
+#include "Terrain.h"
 
 #ifdef defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 #include "direct.h"
@@ -41,7 +42,7 @@ char roverPath[512];
 glm::vec3 roverPos(0,0,0);
 glm::vec3 roverRotation(0,0,0);
 
-GameObject* roverPtr;
+Rover* roverPtr;
 
 
 int main()
@@ -178,15 +179,19 @@ int main()
 
     roverPtr = &rover;
 #else
-    Model plane("./resources/plane.obj");
-    GameObject rover(glm::vec3(0,0.5,1),
+    Terrain terrain("./resources/plane.obj");
+    Rover rover(glm::vec3(0,0.5,1),
                      0,
                      glm::vec3(1,1,1),
                      glm::vec3(1,1,1),
                      glm::vec3(0,0,0),
-                     "./resources/rover.obj");
+                     "./resources/rover.obj",
+                     terrain.getHeightMap());
 
     roverPtr = &rover;
+
+    Model rockModel("./resources/rock.obj");
+    Model mokeyStatueModel("./resources/monkeyStatue.obj");
 #endif
 
     // render loop
@@ -235,7 +240,10 @@ int main()
         glm::mat4 model = glm::mat4(1.0f);
         lightingShader.setMat4("model", model);
 
-        plane.draw(lightingShader);
+        rockModel.draw(lightingShader);
+        mokeyStatueModel.draw(lightingShader);
+
+        terrain.draw(lightingShader);
 
         // world transformation
 //        model = glm::mat4(1.0f);
@@ -296,28 +304,7 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
 
-//    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-//    {
-//        roverPtr->setLeftVelocity(0.5);
-//        roverPtr->setRightVelocity(0.5);
-//    }
-//    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-//    {
-//        roverPtr->setLeftVelocity(-0.5);
-//        roverPtr->setRightVelocity(-0.5);
-//    }
-//    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-//    {
-////        roverPtr->setRotation( roverPtr->getRotation() + glm::vec3(0,2,0));
-//        roverPtr->setLeftVelocity(roverPtr->getLeftVelocity() + 0.2);
-//    }
-//    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-//    {
-////        roverPtr->setRotation( roverPtr->getRotation() - glm::vec3(0,2,0));
-//        roverPtr->setRightVelocity(roverPtr->getRightVelocity() + 0.2);
-//    }
-
-    float speed = 0.2;
+    float speed = 0.04;
 
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
     {

@@ -74,3 +74,11 @@ void Mesh::draw(Shader &shader) {
 glm::vec3 Mesh::getOrigin() {
     return glm::vec3((minVec.x + maxVec.x) / 2, (minVec.y + maxVec.y) / 2, (minVec.z + maxVec.z) / 2);
 }
+
+const vec3 &Mesh::getMinVec() const {
+    return minVec;
+}
+
+const vec3 &Mesh::getMaxVec() const {
+    return maxVec;
+}
