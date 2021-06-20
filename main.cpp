@@ -44,6 +44,8 @@ glm::vec3 roverRotation(0,0,0);
 
 Rover* roverPtr;
 
+bool cameraFlip = false;
+
 
 int main()
 {
@@ -227,7 +229,11 @@ int main()
 
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 300.0f);
-        glm::mat4 view = camera.GetViewMatrix();
+        glm::mat4 view;
+        if (cameraFlip)
+            view = camera.GetViewMatrixFromRover(rover.position, rover.front);
+        else
+            view = camera.GetViewMatrix();
         lightingShader.setMat4("projection", projection);
         lightingShader.setMat4("view", view);
 
@@ -304,7 +310,7 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
 
-    float speed = 0.04;
+    float speed = 0.03;
 
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
     {
@@ -321,6 +327,10 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
     {
         roverPtr->setRightVelocity(roverPtr->getRightVelocity() - speed);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+        cameraFlip = !cameraFlip;
     }
 
 

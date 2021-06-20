@@ -23,6 +23,11 @@ glm::mat4 Camera::GetViewMatrix()
     return glm::lookAt(Position, Position + Front, Up);
 }
 
+glm::mat4 Camera::GetViewMatrixFromRover(glm::vec3 roverPos, glm::vec3 roverFront)
+{
+    return glm::lookAt(roverPos + glm::vec3(0, 5, 0) - roverFront * 5.0f, roverPos + roverFront * 10.0f, glm::vec3(0,1,0));
+}
+
 void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 {
     float velocity = MovementSpeed * deltaTime;
