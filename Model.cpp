@@ -187,6 +187,26 @@ glm::vec3 Model::getOrigin(string name) {
     }
 }
 
+glm::vec3 Model::getMinVec() {
+    glm::vec3 minVec = glm::vec3(0,0,0);
+    for (Mesh mesh : meshes) {
+        glm::vec3 tmp = mesh.getMinVec();
+        if (glm::length(tmp) > glm::length(minVec))
+            minVec = mesh.getMinVec();
+    }
+    return minVec;
+}
+
+glm::vec3 Model::getMaxVec() {
+    glm::vec3 maxVec = glm::vec3(0,0,0);
+    for (Mesh mesh : meshes) {
+        glm::vec3 tmp = mesh.getMaxVec();
+        if (glm::length(tmp) > glm::length(maxVec))
+            maxVec = mesh.getMaxVec();
+    }
+    return maxVec;
+}
+
 uint TextureFromFile(const char *path, const string &directory, bool gamma)
 {
     string filename = string(path);

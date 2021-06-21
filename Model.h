@@ -22,6 +22,9 @@ public:
     glm::vec3 getMinVec(string meshName);
     glm::vec3 getMaxVec(string meshName);
 
+    glm::vec3 getMinVec();
+    glm::vec3 getMaxVec();
+
 private:
     vector<Mesh> meshes;
     vector<Texture> loadedTextures;

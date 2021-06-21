@@ -9,6 +9,8 @@
 #include <vec3.hpp>
 #include "Model.h"
 #include "HeightMap.h"
+#include "CircleHitbox.h"
+#include "StaticObject.h"
 
 #define MAX_SPEED 2
 
@@ -16,6 +18,7 @@ class Rover {
 
 public:
     HeightMap* heightMap;
+    vector<StaticObject*> staticObjects;
 
     glm::vec3 position;
     glm::vec3 leftTrackPos;
@@ -41,11 +44,16 @@ public:
     glm::vec3 front;
 
     Model model;
+    CircleHitbox hitbox;
 
     virtual void draw(Shader &shader);
 
+    void addStaticObject(StaticObject* objPtr);
+
+    bool checkCollisions();
+
     Rover(const glm::vec3 &position, const float &velocity, const glm::vec3 &color,
-               const glm::vec3 &lightColor, glm::vec3 rotation, string path, HeightMap* heightMap);
+               const glm::vec3 &lightColor, glm::vec3 rotation, string path, HeightMap* heightMap, float radius);
 
     float getLeftVelocity() const;
 
@@ -88,6 +96,8 @@ public:
     void updateRotation();
 
     void updateWheelPositions();
+
+    void disco();
 };
 
 

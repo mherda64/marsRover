@@ -9,6 +9,7 @@
 #include "Model.h"
 #include "Rover.h"
 #include "Terrain.h"
+#include "StaticObject.h"
 
 #ifdef defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 #include "direct.h"
@@ -27,7 +28,7 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 10.0f, 10.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -181,19 +182,43 @@ int main()
 
     roverPtr = &rover;
 #else
-    Terrain terrain("./resources/plane.obj");
+    Terrain terrain(glm::vec3(0, 0, 0),
+                    glm::vec3(0, 0, 0),
+                    glm::vec3(1, 1, 1),
+                    glm::vec3(1, 1, 1),
+                    "./resources/plane.obj",
+                    0);
+
+    StaticObject rock(glm::vec3(15, 2, 10),
+                      glm::vec3(0, 0, 0),
+                      glm::vec3(1, 1, 1),
+                      glm::vec3(1, 1, 1),
+                      "./resources/rock.obj",
+                      7);
+
+    StaticObject monkeyStatue(glm::vec3(-15, 2, 10),
+                      glm::vec3(0, 0, 0),
+                      glm::vec3(1, 1, 1),
+                      glm::vec3(1, 1, 1),
+                      "./resources/monkeyStatue.obj",
+                      2);
+
     Rover rover(glm::vec3(0,0.5,1),
-                     0,
-                     glm::vec3(1,1,1),
-                     glm::vec3(1,1,1),
-                     glm::vec3(0,0,0),
-                     "./resources/rover.obj",
-                     terrain.getHeightMap());
+                0,
+                glm::vec3(1,1,1),
+                glm::vec3(1,1,1),
+                glm::vec3(0,0,0),
+                "./resources/rover.obj",
+                terrain.getHeightMap(),
+                2);
 
     roverPtr = &rover;
 
-    Model rockModel("./resources/rock.obj");
-    Model mokeyStatueModel("./resources/monkeyStatue.obj");
+    rover.addStaticObject(&rock);
+    rover.addStaticObject(&monkeyStatue);
+
+//    Model rockModel("./resources/rock.obj");
+//    Model mokeyStatueModel("./resources/monkeyStatue.obj");
 #endif
 
     // render loop
@@ -242,12 +267,13 @@ int main()
         rover.updatePos();
         rover.draw(lightingShader);
 
+
         // world transformation
         glm::mat4 model = glm::mat4(1.0f);
         lightingShader.setMat4("model", model);
 
-        rockModel.draw(lightingShader);
-        mokeyStatueModel.draw(lightingShader);
+        rock.draw(lightingShader);
+        monkeyStatue.draw(lightingShader);
 
         terrain.draw(lightingShader);
 

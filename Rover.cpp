@@ -31,12 +31,16 @@ void Rover::draw(Shader &shader) {
 }
 
 Rover::Rover(const glm::vec3 &position, const float &velocity, const glm::vec3 &color,
-                       const glm::vec3 &lightColor, glm::vec3 rotation, string path, HeightMap* heightMap) : position(position),
+                       const glm::vec3 &lightColor, glm::vec3 rotation, string path, HeightMap* heightMap, float radius) : position(position),
                                                                                           velocity(velocity),
                                                                                           color(color),
                                                                                           lightColor(lightColor),
                                                                                           rotation(rotation), model(path),
-                                                                                          heightMap(heightMap){
+                                                                                          heightMap(heightMap),
+                                                                                          hitbox(radius, &this->position){
+    // Uncomment to auto radius hitbox
+//    this->hitbox.radius = hitbox.approximateRadius(&model);
+
     leftTrackPos = model.getOrigin("Left_Middle_Wheel_Cylinder.001") + position;
     rightTrackPos = model.getOrigin("Right_Middle_Wheel_Cylinder.007") + position;
 
@@ -122,17 +126,15 @@ void Rover::updatePos() {
 //    position.y = (leftTrackPos.y + rightTrackPos.y) / 2;
 //    position.z = (leftTrackPos.z + rightTrackPos.z) / 2;
 
+    if (checkCollisions()) {
+        leftVelocity = -leftVelocity;
+        rightVelocity = -rightVelocity;
+    }
+
     if (leftVelocity == 0 && rightVelocity == 0) {
 
     } else {
-//        front = glm::cross(position, glm::vec3(0,1,0));
-//        front = glm::normalize(front);
-//
-//        position += front * 0.1f;
 
-
-//        leftVelocity *= 0.5;
-//        rightVelocity *= 0.5;
 
         glm::vec3 leftTrackVector = front * leftVelocity;
         glm::vec3 rightTrackVector = front * rightVelocity;
@@ -179,7 +181,9 @@ void Rover::updatePos() {
         float leftBackHeight = heightMap->getHeight(glm::vec2(leftBackWheelPos.x, leftBackWheelPos.z));
         float rightBackHeight = heightMap->getHeight(glm::vec2(rightBackWheelPos.x, rightBackWheelPos.z));
 
-        cout << "LF:" << leftFrontHeight << " RF:" << rightFrontHeight << " LB:" << leftBackHeight << " RB:" << rightBackHeight << "\n";
+        position.y = (leftFrontHeight + rightFrontHeight + leftBackHeight + rightBackHeight) / 4;
+
+//        cout << "LF:" << leftFrontHeight << " RF:" << rightFrontHeight << " LB:" << leftBackHeight << " RB:" << rightBackHeight << "\n";
 
         float leftPitch = rotation.z;
         float rightPitch = rotation.z;
@@ -255,7 +259,7 @@ void Rover::updatePos() {
         if (abs(rotation.x) < 1) rotation.x = 0;
         if (abs(rotation.z) < 1) rotation.z = 0;
 
-        cout << rotation.x << ":" << rotation.z << "\n";
+//        cout << rotation.x << ":" << rotation.z << "\n";
 
 //        cout << leftFrontWheelPos.x << ":" << leftFrontWheelPos.y << ":" << leftFrontWheelPos.z << "\n";
 
@@ -301,3 +305,18 @@ void Rover::updateWheelPositions() {
     rightFrontWheelPos = rightTrackPos + front * 2.0f;
     rightBackWheelPos = rightTrackPos - front * 2.0f;
 }
+
+void Rover::addStaticObject(StaticObject *objPtr) {
+    staticObjects.push_back(objPtr);
+}
+
+bool Rover::checkCollisions() {
+    for (StaticObject* obj : staticObjects) {
+        if (this->hitbox.collides(&obj->hitbox)) {
+            cout << "KOLIZJA" << "\n";
+            return true;
+        }
+    }
+    return false;
+}
+

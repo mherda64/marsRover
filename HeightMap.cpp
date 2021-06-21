@@ -69,7 +69,7 @@ float HeightMap::getHeight(glm::vec2 pos) {
     float y = (float)(map[(int)round(newPos.y * this->pixelsHeight / size.z)][(int)round(newPos.x * this->pixelsWidth / size.x)] - this->minimumBrightness) / (float)(this->maximumBrightness - this->minimumBrightness);
 
 
-    std::cout << "x:" << newPos.x << " z:" << newPos.y << " y:" << y << "\n";
+//    std::cout << "x:" << newPos.x << " z:" << newPos.y << " y:" << y << "\n";
 
     return y * (maxVec.y - minVec.y) + minVec.y;
 }

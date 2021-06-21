@@ -8,23 +8,25 @@
 
 #include "Model.h"
 #include "HeightMap.h"
+#include "StaticObject.h"
 
-class Terrain {
+class Terrain : public StaticObject {
 public:
-    Model model;
 
     glm::vec3 minVec;
     glm::vec3 maxVec;
 
     HeightMap* heightMap;
 
-    Terrain(string path);
+    Terrain(const vec3 &position, const vec3 &rotation, const vec3 &color, const vec3 &lightColor,
+            string path1, float radius);
 
     virtual ~Terrain();
 
-    virtual void draw(Shader &shader);
 
     HeightMap* getHeightMap();
+
+    void draw(Shader &shader) override;
 
 };
 
