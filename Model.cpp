@@ -181,6 +181,12 @@ glm::vec3 Model::getMaxVec(string meshName) {
     }
 }
 
+glm::vec3 Model::getOrigin(string name) {
+    for (Mesh mesh : meshes) {
+        if (mesh.name == name) return mesh.getOrigin();
+    }
+}
+
 uint TextureFromFile(const char *path, const string &directory, bool gamma)
 {
     string filename = string(path);

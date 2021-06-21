@@ -16,9 +16,11 @@ void Rover::draw(Shader &shader) {
 
     modelMat = glm::translate(modelMat, position);
 
-    modelMat = glm::rotate(modelMat, glm::radians(rotation.x), glm::vec3(1,0,0));
     modelMat = glm::rotate(modelMat, glm::radians(rotation.y), glm::vec3(0,1,0));
+    modelMat = glm::rotate(modelMat, glm::radians(rotation.x), glm::vec3(1,0,0));
     modelMat = glm::rotate(modelMat, glm::radians(rotation.z), glm::vec3(0,0,1));
+
+
 
     modelMat = glm::scale(modelMat, glm::vec3(1,1,1));
 
@@ -35,14 +37,18 @@ Rover::Rover(const glm::vec3 &position, const float &velocity, const glm::vec3 &
                                                                                           lightColor(lightColor),
                                                                                           rotation(rotation), model(path),
                                                                                           heightMap(heightMap){
-    leftTrackPos = model.getLeftMiddleWheelOrigin() + position;
-    rightTrackPos = model.getRightMiddleWheelOrigin() + position;
+    leftTrackPos = model.getOrigin("Left_Middle_Wheel_Cylinder.001") + position;
+    rightTrackPos = model.getOrigin("Right_Middle_Wheel_Cylinder.007") + position;
 
     this->position.x = (leftTrackPos.x + rightTrackPos.x) / 2;
     this->position.y = (leftTrackPos.y + rightTrackPos.y) / 2;
     this->position.z = (leftTrackPos.z + rightTrackPos.z) / 2;
 
     front = glm::vec3(-1,0,0);
+
+
+    distBetweenWheelsX = (model.getOrigin("Left_Back_Wheel_Cylinder.008") - model.getOrigin("Left_Middle_Wheel_Cylinder.001")).x;
+    distBetweenWheelsZ =(model.getOrigin("Left_Middle_Wheel_Cylinder.001") - model.getOrigin("Right_Middle_Wheel_Cylinder.007")).z;
 }
 
 const glm::vec3 &Rover::getPosition() const {
@@ -165,8 +171,96 @@ void Rover::updatePos() {
 
         updateRotation();
 
+        updateWheelPositions();
+
+        float leftFrontHeight = heightMap->getHeight(glm::vec2(leftFrontWheelPos.x, leftFrontWheelPos.z));
+        float rightFrontHeight = heightMap->getHeight(glm::vec2(rightFrontWheelPos.x, rightFrontWheelPos.z));
+
+        float leftBackHeight = heightMap->getHeight(glm::vec2(leftBackWheelPos.x, leftBackWheelPos.z));
+        float rightBackHeight = heightMap->getHeight(glm::vec2(rightBackWheelPos.x, rightBackWheelPos.z));
+
+        cout << "LF:" << leftFrontHeight << " RF:" << rightFrontHeight << " LB:" << leftBackHeight << " RB:" << rightBackHeight << "\n";
+
+        float leftPitch = rotation.z;
+        float rightPitch = rotation.z;
+
+        if (leftFrontHeight > leftBackHeight)
+        {
+            if (position.y < leftFrontHeight)
+                leftPitch = -glm::degrees(atan((leftFrontHeight - leftBackHeight) / distBetweenWheelsX));
+            else leftPitch = 0.f;
+        }
+        else if (leftBackHeight > leftFrontHeight)
+        {
+            if (position.y < leftBackHeight)
+                leftPitch = -glm::degrees(atan((leftFrontHeight - leftBackHeight) / distBetweenWheelsX));
+            else leftPitch = 0.f;
+        }
+        else leftPitch = 0.f;
+
+        if (rightFrontHeight > rightBackHeight)
+        {
+            if (position.y < rightFrontHeight)
+                rightPitch = -glm::degrees(atan((rightFrontHeight - rightBackHeight) / distBetweenWheelsX));
+            else rightPitch = 0.f;
+        }
+        else if (rightBackHeight > rightFrontHeight)
+        {
+            if (position.y < rightBackHeight)
+                rightPitch = -glm::degrees(atan((rightFrontHeight - rightBackHeight) / distBetweenWheelsX));
+            else rightPitch = 0.f;
+        }
+        else rightPitch = 0.f;
+
+        rotation.z = (leftPitch + rightPitch) / 2;
+
+        //DISTANCE BETWEEN LEFT AND RIGHT WHEELS IS DIFFERENT
+
+        float frontRoll = rotation.x;
+        float backRoll = rotation.x;
+
+        if (leftFrontHeight > rightFrontHeight)
+        {
+            if (position.y < leftFrontHeight)
+                frontRoll = -glm::degrees(atan((leftFrontHeight - rightFrontHeight) / distBetweenWheelsZ));
+            else frontRoll = 0.f;
+        }
+        else if (rightFrontHeight > leftFrontHeight)
+        {
+            if (position.y < rightFrontHeight)
+                frontRoll = -glm::degrees(atan((leftFrontHeight - rightFrontHeight) / distBetweenWheelsZ));
+            else frontRoll = 0.f;
+        }
+        else frontRoll = 0.f;
+
+        if (leftBackHeight > rightBackHeight)
+        {
+            if (position.y < leftBackHeight)
+                backRoll = -glm::degrees(atan((leftBackHeight - rightBackHeight) / distBetweenWheelsZ));
+            else backRoll = 0.f;
+        }
+        else if (rightBackHeight > leftBackHeight)
+        {
+            if (position.y < rightBackHeight)
+                backRoll = -glm::degrees(atan((leftBackHeight - rightBackHeight) / distBetweenWheelsZ));
+            else backRoll = 0.f;
+        }
+        else backRoll = 0.f;
+
+//        frontRoll = -glm::degrees(atan((leftFrontHeight - rightFrontHeight) / distBetweenWheelsZ));
+
+        rotation.x = (frontRoll + backRoll) / 2;
+//        rotation.x = frontRoll;
+
+        if (abs(rotation.x) < 1) rotation.x = 0;
+        if (abs(rotation.z) < 1) rotation.z = 0;
+
+        cout << rotation.x << ":" << rotation.z << "\n";
+
+//        cout << leftFrontWheelPos.x << ":" << leftFrontWheelPos.y << ":" << leftFrontWheelPos.z << "\n";
+
 //        cout << front.x << ":" << front.z << ":" << rotation.y << "\n\n";
-        cout << leftVelocity << ":" << rightVelocity << "\n";
+//        cout << leftVelocity << ":" << rightVelocity << "\n";
 //        cout << position.x << ":" << position.y << ":" << position.z << "\n";
 //        cout << front.x << ":" << front.y << ":" << front.z << "\n\n";
     }
@@ -198,4 +292,12 @@ void Rover::updateRotation() {
         rotation.y = glm::degrees(acos(glm::dot(orig, front) / ( glm::length(orig) * glm::length(front))));
     else
         rotation.y = glm::degrees(-acos(glm::dot(orig, front) / ( glm::length(orig) * glm::length(front))));
+}
+
+void Rover::updateWheelPositions() {
+    leftFrontWheelPos = leftTrackPos + front * 2.0f;
+    leftBackWheelPos = leftTrackPos - front * 2.0f;
+
+    rightFrontWheelPos = rightTrackPos + front * 2.0f;
+    rightBackWheelPos = rightTrackPos - front * 2.0f;
 }

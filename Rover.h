@@ -20,6 +20,15 @@ public:
     glm::vec3 position;
     glm::vec3 leftTrackPos;
     glm::vec3 rightTrackPos;
+
+    glm::vec3 leftFrontWheelPos;
+    glm::vec3 rightFrontWheelPos;
+    glm::vec3 leftBackWheelPos;
+    glm::vec3 rightBackWheelPos;
+
+    float distBetweenWheelsX;
+    float distBetweenWheelsZ;
+
     float velocity;
     float maxVelocity = 0.5;
 
@@ -77,6 +86,8 @@ public:
     void updatePos();
 
     void updateRotation();
+
+    void updateWheelPositions();
 };
 
 
