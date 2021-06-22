@@ -6,7 +6,6 @@
 
 #include "Shader.h"
 #include "Camera.h"
-#include "Model.h"
 #include "Rover.h"
 #include "Terrain.h"
 #include "StaticObject.h"
@@ -24,8 +23,8 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1000;
+const unsigned int SCR_HEIGHT = 1000;
 
 // camera
 Camera camera(glm::vec3(0.0f, 10.0f, 10.0f));
@@ -38,13 +37,10 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
 glm::vec3 lightPos(1.2f, 2.0f, 2.0f);
-char roverPath[512];
-
-glm::vec3 roverPos(0,0,0);
-glm::vec3 roverRotation(0,0,0);
 
 Rover* roverPtr;
 
+// What camera we're using right now
 bool cameraFlip = false;
 
 
@@ -160,14 +156,14 @@ int main()
     glEnableVertexAttribArray(1);
 
 
-    unsigned int lightVAO;
-    glGenVertexArrays(1, &lightVAO);
-    glBindVertexArray(lightVAO);
-    // we only need to bind to the VBO, the container's VBO's data already contains the data.
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    // set the vertex attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+//    unsigned int lightVAO;
+//    glGenVertexArrays(1, &lightVAO);
+//    glBindVertexArray(lightVAO);
+//    // we only need to bind to the VBO, the container's VBO's data already contains the data.
+//    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+//    // set the vertex attribute
+//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+//    glEnableVertexAttribArray(0);
 
     lightingShader.setVec3("lightPos", lightPos);
 
@@ -233,9 +229,6 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        float x = sin(glfwGetTime() * 3);
-        float z = cos(glfwGetTime());
-
 //        lightPos = glm::vec3(x, 3.0f, z);
         lightPos = camera.Position + glm::vec3(0, 1.0f, 0);
         // input
@@ -268,9 +261,9 @@ int main()
         rover.draw(lightingShader);
 
 
-        // world transformation
-        glm::mat4 model = glm::mat4(1.0f);
-        lightingShader.setMat4("model", model);
+//        // world transformation
+//        glm::mat4 model = glm::mat4(1.0f);
+//        lightingShader.setMat4("model", model);
 
         rock.draw(lightingShader);
         monkeyStatue.draw(lightingShader);
@@ -288,17 +281,17 @@ int main()
 
 
         // also draw the lamp object
-        model = glm::mat4(1.0f);
-        lightCubeShader.use();
-        lightCubeShader.setMat4("projection", projection);
-        lightCubeShader.setMat4("view", view);
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
-        lightCubeShader.setMat4("model", model);
+//        model = glm::mat4(1.0f);
+//        lightCubeShader.use();
+//        lightCubeShader.setMat4("projection", projection);
+//        lightCubeShader.setMat4("view", view);
+//        model = glm::mat4(1.0f);
+//        model = glm::translate(model, lightPos);
+//        model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+//        lightCubeShader.setMat4("model", model);
 
-        glBindVertexArray(lightVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+//        glBindVertexArray(lightVAO);
+//        glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
 
@@ -311,7 +304,7 @@ int main()
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &cubeVAO);
-    glDeleteVertexArrays(1, &lightVAO);
+//    glDeleteVertexArrays(1, &lightVAO);
     glDeleteBuffers(1, &VBO);
 
     // glfw: terminate, clearing all previously allocated GLFW resources.

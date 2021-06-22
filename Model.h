@@ -14,9 +14,6 @@ public:
 
     virtual void draw(Shader &shader);
 
-    glm::vec3 getLeftMiddleWheelOrigin();
-    glm::vec3 getRightMiddleWheelOrigin();
-
     glm::vec3 getOrigin(string name);
 
     glm::vec3 getMinVec(string meshName);

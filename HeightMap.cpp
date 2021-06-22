@@ -73,3 +73,9 @@ float HeightMap::getHeight(glm::vec2 pos) {
 
     return y * (maxVec.y - minVec.y) + minVec.y;
 }
+
+HeightMap::~HeightMap() {
+    delete[] map;
+
+//    delete map;
+}

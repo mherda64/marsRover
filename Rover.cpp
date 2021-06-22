@@ -116,15 +116,6 @@ void Rover::goForward(float velocity) {
 }
 
 void Rover::updatePos() {
-//    position += front * velocity;
-//    velocity = 0.8 * velocity;
-//    cout << velocity << "\n";
-//    if (velocity < 0.05 && velocity > -0.05) velocity = 0;
-
-// Potem
-//    position.x = (leftTrackPos.x + rightTrackPos.x) / 2;
-//    position.y = (leftTrackPos.y + rightTrackPos.y) / 2;
-//    position.z = (leftTrackPos.z + rightTrackPos.z) / 2;
 
     if (checkCollisions()) {
         leftVelocity = -leftVelocity;
@@ -135,12 +126,18 @@ void Rover::updatePos() {
 
     } else {
 
-
         glm::vec3 leftTrackVector = front * leftVelocity;
         glm::vec3 rightTrackVector = front * rightVelocity;
 
+        // nowe pozycje gąsienic żeby się nie rozjeżdzały xD
+        glm::vec3 rightVec = glm::cross(front, glm::vec3(0,1,0));
+        leftTrackPos = -rightVec * (distBetweenWheelsZ / 2) + position;
+        rightTrackPos = rightVec * (distBetweenWheelsZ / 2) + position;
+
         leftTrackPos += leftTrackVector;
         rightTrackPos += rightTrackVector;
+
+        cout << glm::length(leftTrackPos - rightTrackPos) << "\n";
 
         glm::vec3 diffVector;
 
@@ -169,7 +166,7 @@ void Rover::updatePos() {
         if (rightVelocity < 0.01 && rightVelocity > -0.01)
             rightVelocity = 0;
 
-        this->position.y = heightMap->getHeight(glm::vec2(position.x, position.z));
+//        this->position.y = heightMap->getHeight(glm::vec2(position.x, position.z));
 
         updateRotation();
 
@@ -191,13 +188,13 @@ void Rover::updatePos() {
         if (leftFrontHeight > leftBackHeight)
         {
             if (position.y < leftFrontHeight)
-                leftPitch = -glm::degrees(atan((leftFrontHeight - leftBackHeight) / distBetweenWheelsX));
+                leftPitch = -glm::degrees(atan((leftFrontHeight - leftBackHeight) / (distBetweenWheelsX * 2)));
             else leftPitch = 0.f;
         }
         else if (leftBackHeight > leftFrontHeight)
         {
             if (position.y < leftBackHeight)
-                leftPitch = -glm::degrees(atan((leftFrontHeight - leftBackHeight) / distBetweenWheelsX));
+                leftPitch = -glm::degrees(atan((leftFrontHeight - leftBackHeight) / (distBetweenWheelsX * 2)));
             else leftPitch = 0.f;
         }
         else leftPitch = 0.f;
@@ -205,20 +202,18 @@ void Rover::updatePos() {
         if (rightFrontHeight > rightBackHeight)
         {
             if (position.y < rightFrontHeight)
-                rightPitch = -glm::degrees(atan((rightFrontHeight - rightBackHeight) / distBetweenWheelsX));
+                rightPitch = -glm::degrees(atan((rightFrontHeight - rightBackHeight) / (distBetweenWheelsX * 2)));
             else rightPitch = 0.f;
         }
         else if (rightBackHeight > rightFrontHeight)
         {
             if (position.y < rightBackHeight)
-                rightPitch = -glm::degrees(atan((rightFrontHeight - rightBackHeight) / distBetweenWheelsX));
+                rightPitch = -glm::degrees(atan((rightFrontHeight - rightBackHeight) / (distBetweenWheelsX * 2)));
             else rightPitch = 0.f;
         }
         else rightPitch = 0.f;
 
         rotation.z = (leftPitch + rightPitch) / 2;
-
-        //DISTANCE BETWEEN LEFT AND RIGHT WHEELS IS DIFFERENT
 
         float frontRoll = rotation.x;
         float backRoll = rotation.x;
@@ -299,11 +294,11 @@ void Rover::updateRotation() {
 }
 
 void Rover::updateWheelPositions() {
-    leftFrontWheelPos = leftTrackPos + front * 2.0f;
-    leftBackWheelPos = leftTrackPos - front * 2.0f;
+    leftFrontWheelPos = leftTrackPos + front * distBetweenWheelsX;
+    leftBackWheelPos = leftTrackPos - front * distBetweenWheelsX;
 
-    rightFrontWheelPos = rightTrackPos + front * 2.0f;
-    rightBackWheelPos = rightTrackPos - front * 2.0f;
+    rightFrontWheelPos = rightTrackPos + front * distBetweenWheelsX;
+    rightBackWheelPos = rightTrackPos - front * distBetweenWheelsX;
 }
 
 void Rover::addStaticObject(StaticObject *objPtr) {
@@ -313,7 +308,7 @@ void Rover::addStaticObject(StaticObject *objPtr) {
 bool Rover::checkCollisions() {
     for (StaticObject* obj : staticObjects) {
         if (this->hitbox.collides(&obj->hitbox)) {
-            cout << "KOLIZJA" << "\n";
+//            cout << "KOLIZJA" << "\n";
             return true;
         }
     }

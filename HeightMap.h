@@ -29,6 +29,8 @@ public:
 
     HeightMap(string path, glm::vec3 min, glm::vec3 max);
 
+    virtual ~HeightMap();
+
     float getHeight(glm::vec2 pos);
 
 

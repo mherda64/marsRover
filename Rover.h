@@ -97,7 +97,6 @@ public:
 
     void updateWheelPositions();
 
-    void disco();
 };
 
 

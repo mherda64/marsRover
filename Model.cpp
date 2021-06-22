@@ -157,18 +157,6 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type,
     return textures;
 }
 
-glm::vec3 Model::getLeftMiddleWheelOrigin() {
-    for (Mesh mesh : meshes) {
-        if (mesh.name == "Left_Middle_Wheel_Cylinder.001") return mesh.getOrigin();
-    }
-}
-
-glm::vec3 Model::getRightMiddleWheelOrigin() {
-    for (Mesh mesh : meshes) {
-        if (mesh.name == "Right_Middle_Wheel_Cylinder.007") return mesh.getOrigin();
-    }
-}
-
 glm::vec3 Model::getMinVec(string meshName) {
     for (Mesh mesh : meshes) {
         if (mesh.name == meshName) return mesh.getMinVec();

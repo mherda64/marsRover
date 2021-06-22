@@ -12,7 +12,7 @@ bool CircleHitbox::collides(CircleHitbox *otherHitbox) {
 
 //    cout << "dist:" << dist << "\n";
 
-    if (dist < (this->radius + otherHitbox->radius)) {
+    if (dist < (this->radius +   otherHitbox->radius)) {
         return true;
     }
     return false;
