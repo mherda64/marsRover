@@ -4,6 +4,8 @@ Mars Rover game writen in C++ using OpenGL (GLFW, GLAD, GLM, ASSIMP) as a univer
 
 ## Work in progress
 
+[Gameplay](https://www.youtube.com/watch?v=whR8ho2Ms4g)
+
 ![Gameplay](https://i.imgur.com/y36Nx7z.jpg)
 
 ![Gameplay](https://i.imgur.com/sK0e6cn.jpg)
