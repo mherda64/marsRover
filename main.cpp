@@ -46,19 +46,12 @@ bool cameraFlip = false;
 
 int main()
 {
-    // glfw: initialize and configure
-    // ------------------------------
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
 
-    // glfw window creation
-    // --------------------
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Mars Rover", NULL, NULL);
     if (window == NULL)
     {
@@ -71,117 +64,25 @@ int main()
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
-    // tell GLFW to capture our mouse
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
 
-    // configure global opengl state
-    // -----------------------------
     glEnable(GL_DEPTH_TEST);
-
-    // build and compile our shader zprogram
-    // ------------------------------------
-
 
     Shader lightingShader("./resources/shaders/lightingShader.vs", "./resources/shaders/lightingShader.fs");
 
-    Shader lightCubeShader("./resources/shaders/lightCubeShader.vs", "./resources/shaders/lightCubeShader.fs");
-
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
-    float vertices[] = {
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-            0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-    };
-
-    unsigned int VBO, cubeVAO;
-    glGenVertexArrays(1, &cubeVAO);
-    glGenBuffers(1, &VBO);
-
-    glBindVertexArray(cubeVAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-
-//    unsigned int lightVAO;
-//    glGenVertexArrays(1, &lightVAO);
-//    glBindVertexArray(lightVAO);
-//    // we only need to bind to the VBO, the container's VBO's data already contains the data.
-//    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-//    // set the vertex attribute
-//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-//    glEnableVertexAttribArray(0);
-
     lightingShader.setVec3("lightPos", lightPos);
 
-#ifdef defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-    Model plane("resources\\plane.obj");
-    GameObject rover(roverPos,
-                     glm::vec3(0,0,0),
-                     glm::vec3(1,1,1),
-                     glm::vec3(1,1,1),
-                     roverRotation,
-                     "resources\\rover.obj");
-
-    roverPtr = &rover;
-#else
     Terrain terrain(glm::vec3(0, 0, 0),
                     glm::vec3(0, 0, 0),
                     glm::vec3(1, 1, 1),
                     glm::vec3(1, 1, 1),
+                    glm::vec3(1,1,1),
                     "./resources/plane.obj",
                     0);
 
@@ -189,6 +90,7 @@ int main()
                       glm::vec3(0, 0, 0),
                       glm::vec3(1, 1, 1),
                       glm::vec3(1, 1, 1),
+                      glm::vec3(1,1,1),
                       "./resources/rock.obj",
                       7);
 
@@ -196,6 +98,7 @@ int main()
                       glm::vec3(0, 0, 0),
                       glm::vec3(1, 1, 1),
                       glm::vec3(1, 1, 1),
+                              glm::vec3(1,1,1),
                       "./resources/monkeyStatue.obj",
                       2);
 
@@ -213,34 +116,22 @@ int main()
     rover.addStaticObject(&rock);
     rover.addStaticObject(&monkeyStatue);
 
-//    Model rockModel("./resources/rock.obj");
-//    Model mokeyStatueModel("./resources/monkeyStatue.obj");
-#endif
 
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-//        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-        // per-frame time logic
-        // --------------------
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-//        lightPos = glm::vec3(x, 3.0f, z);
         lightPos = camera.Position + glm::vec3(0, 1.0f, 0);
-        // input
-        // -----
+
         processInput(window);
 
-        // render
-        // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // be sure to activate shader when setting uniforms/drawing objects
         lightingShader.use();
         lightingShader.setVec3("lightPos", lightPos);
         lightingShader.setVec3("viewPos", camera.Position);
@@ -255,57 +146,20 @@ int main()
         lightingShader.setMat4("projection", projection);
         lightingShader.setMat4("view", view);
 
-
-//        rover.updateFrontVec();
         rover.updatePos();
         rover.draw(lightingShader);
 
-
-//        // world transformation
-//        glm::mat4 model = glm::mat4(1.0f);
-//        lightingShader.setMat4("model", model);
-
         rock.draw(lightingShader);
         monkeyStatue.draw(lightingShader);
-
         terrain.draw(lightingShader);
 
-        // world transformation
-//        model = glm::mat4(1.0f);
-//        float angle = glfwGetTime() * 20;
-//        model = glm::translate(model, roverPos);
-////        model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
-//        lightingShader.setMat4("model", model);
-
-//        rover.draw(lightingShader);
-
-
-        // also draw the lamp object
-//        model = glm::mat4(1.0f);
-//        lightCubeShader.use();
-//        lightCubeShader.setMat4("projection", projection);
-//        lightCubeShader.setMat4("view", view);
-//        model = glm::mat4(1.0f);
-//        model = glm::translate(model, lightPos);
-//        model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
-//        lightCubeShader.setMat4("model", model);
-
-//        glBindVertexArray(lightVAO);
-//        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
-
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &cubeVAO);
-//    glDeleteVertexArrays(1, &lightVAO);
-    glDeleteBuffers(1, &VBO);
+
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
@@ -351,8 +205,6 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
         cameraFlip = !cameraFlip;
     }
-
-
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

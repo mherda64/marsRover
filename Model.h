@@ -11,14 +11,11 @@
 class Model {
 public:
     Model(string path);
-
     virtual void draw(Shader &shader);
 
     glm::vec3 getOrigin(string name);
-
     glm::vec3 getMinVec(string meshName);
     glm::vec3 getMaxVec(string meshName);
-
     glm::vec3 getMinVec();
     glm::vec3 getMaxVec();
 
@@ -31,8 +28,6 @@ private:
     vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName);
     void processNode(aiNode *node, const aiScene *scene);
     Mesh processMesh(aiMesh *mesh, const aiScene *scene);
-
-
 };
 
 

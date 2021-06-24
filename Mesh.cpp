@@ -14,7 +14,6 @@ Mesh::Mesh(string name, vector<Vertex> vertices, vector<uint> indices, vector<Te
 }
 
 void Mesh::setupMesh() {
-
     // Creating buffers and vertex array object
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -45,21 +44,10 @@ void Mesh::setupMesh() {
 
 void Mesh::draw(Shader &shader) {
 
-    uint diffuseNr = 1;
-    uint specularNr = 1;
-
     for (uint i = 0; i < textures.size(); i++)
     {
         glActiveTexture(GL_TEXTURE0 + i);
 
-        string number;
-        string name = textures[i].type;
-        if(name == "texture_diffuse")
-            number = std::to_string(diffuseNr++);
-        else if(name == "texture_specular")
-            number = std::to_string(specularNr++);
-
-        shader.setFloat(("material." + name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
 

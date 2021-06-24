@@ -10,8 +10,6 @@ using namespace std;
 bool CircleHitbox::collides(CircleHitbox *otherHitbox) {
     float dist = glm::length((*position - *otherHitbox->position));
 
-//    cout << "dist:" << dist << "\n";
-
     if (dist < (this->radius +   otherHitbox->radius)) {
         return true;
     }

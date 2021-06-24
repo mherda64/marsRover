@@ -16,14 +16,13 @@ public:
     glm::vec3 rotation;
     glm::vec3 color;
     glm::vec3 lightColor;
+    glm::vec3 scale;
 
     CircleHitbox hitbox;
-
     Model model;
 
     virtual void draw(Shader &shader);
-
-    StaticObject(const vec3 &position, const vec3 &rotation, const vec3 &color, const vec3 &lightColor, string path, float radius);
+    StaticObject(const vec3 &position, const vec3 &rotation, const vec3 &color, const vec3 &lightColor, const vec3 &scale, string path, float radius);
 };
 
 

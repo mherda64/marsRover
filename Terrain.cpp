@@ -4,8 +4,8 @@
 
 #include "Terrain.h"
 
-Terrain::Terrain(const vec3 &position, const vec3 &rotation, const vec3 &color, const vec3 &lightColor,
-                 string path, float radius) : StaticObject(position, rotation, color, lightColor, path,
+Terrain::Terrain(const vec3 &position, const vec3 &rotation, const vec3 &color, const vec3 &lightColor, const vec3 &scale,
+                 string path, float radius) : StaticObject(position, rotation, color, lightColor, scale, path,
                                                                          radius) {
     minVec = model.getMinVec("Plane");
     maxVec = model.getMaxVec("Plane");

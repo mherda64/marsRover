@@ -103,18 +103,6 @@ void Rover::setModel(const Model &model) {
     Rover::model = model;
 }
 
-void Rover::updateFrontVec() {
-    front.x = -cos(glm::radians(rotation.y));
-    front.z = sin(glm::radians(rotation.y));
-
-    front = glm::normalize(front);
-}
-
-void Rover::goForward(float velocity) {
-    if (this->velocity <= maxVelocity && this->velocity >= -maxVelocity)
-        this->velocity += velocity;
-}
-
 void Rover::updatePos() {
 
     if (checkCollisions()) {
@@ -122,22 +110,17 @@ void Rover::updatePos() {
         rightVelocity = -rightVelocity;
     }
 
-    if (leftVelocity == 0 && rightVelocity == 0) {
-
-    } else {
+    if (leftVelocity != 0 || rightVelocity != 0) {
 
         glm::vec3 leftTrackVector = front * leftVelocity;
         glm::vec3 rightTrackVector = front * rightVelocity;
 
-        // nowe pozycje gąsienic żeby się nie rozjeżdzały xD
         glm::vec3 rightVec = glm::cross(front, glm::vec3(0,1,0));
         leftTrackPos = -rightVec * (distBetweenWheelsZ / 2) + position;
         rightTrackPos = rightVec * (distBetweenWheelsZ / 2) + position;
 
         leftTrackPos += leftTrackVector;
         rightTrackPos += rightTrackVector;
-
-        cout << glm::length(leftTrackPos - rightTrackPos) << "\n";
 
         glm::vec3 diffVector;
 
@@ -166,8 +149,6 @@ void Rover::updatePos() {
         if (rightVelocity < 0.01 && rightVelocity > -0.01)
             rightVelocity = 0;
 
-//        this->position.y = heightMap->getHeight(glm::vec2(position.x, position.z));
-
         updateRotation();
 
         updateWheelPositions();
@@ -180,7 +161,6 @@ void Rover::updatePos() {
 
         position.y = (leftFrontHeight + rightFrontHeight + leftBackHeight + rightBackHeight) / 4;
 
-//        cout << "LF:" << leftFrontHeight << " RF:" << rightFrontHeight << " LB:" << leftBackHeight << " RB:" << rightBackHeight << "\n";
 
         float leftPitch = rotation.z;
         float rightPitch = rotation.z;
@@ -246,25 +226,11 @@ void Rover::updatePos() {
         }
         else backRoll = 0.f;
 
-//        frontRoll = -glm::degrees(atan((leftFrontHeight - rightFrontHeight) / distBetweenWheelsZ));
-
         rotation.x = (frontRoll + backRoll) / 2;
-//        rotation.x = frontRoll;
 
         if (abs(rotation.x) < 1) rotation.x = 0;
         if (abs(rotation.z) < 1) rotation.z = 0;
-
-//        cout << rotation.x << ":" << rotation.z << "\n";
-
-//        cout << leftFrontWheelPos.x << ":" << leftFrontWheelPos.y << ":" << leftFrontWheelPos.z << "\n";
-
-//        cout << front.x << ":" << front.z << ":" << rotation.y << "\n\n";
-//        cout << leftVelocity << ":" << rightVelocity << "\n";
-//        cout << position.x << ":" << position.y << ":" << position.z << "\n";
-//        cout << front.x << ":" << front.y << ":" << front.z << "\n\n";
     }
-
-
 }
 
 float Rover::getLeftVelocity() const {
